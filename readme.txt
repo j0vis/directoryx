@@ -32,6 +32,10 @@ Key features:
 * **Accessibility** — Skip links, ARIA labels, semantic HTML5 landmarks, screen-reader-text utilities, reduced motion support.
 * **Translation ready** — All strings use `esc_html__()` / `_e()` with the `directoryx-adult` text domain. POT file included.
 
+== Screenshots ==
+
+1. **Theme Preview** — `screenshot.png` (1200x900) showing the glassmorphic design with the default Midnight Blue color scheme in dark mode.
+
 == Installation ==
 
 1. Upload the theme folder to `/wp-content/themes/`.

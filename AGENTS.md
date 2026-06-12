@@ -86,3 +86,4 @@ All accent colors are WCAG AA compliant against both `#0d1117` (dark background)
 - **WordPress Compatibility**: 6.0–7.0
 - **PHP Requirement**: 8.0+
 - **Files**: 12 modified, 4 created (svg-icons.php, README.md, AGENTS.md, docs/getting-started.md)
+- **Screenshot**: `screenshot.png` (1200×900) — WordPress.org compliant theme preview

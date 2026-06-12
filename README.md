@@ -23,7 +23,9 @@ A high-performance adult site directory WordPress theme built on DirectoryX. Gla
 
 ## Screenshots
 
-*Coming soon*
+![Theme Screenshot](screenshot.png)
+
+The screenshot shows the DirectoryX Adult theme's glassmorphic design with the default Midnight Blue color scheme in dark mode.
 
 ## Installation
 
