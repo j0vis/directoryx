@@ -64,19 +64,22 @@ Custom fields:
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial release
-* Glassmorphic design with 8 accessible color schemes
-* SVG icon system with 30+ inline icons
-* Directory home page template
-* Listing grid with glass cards, status badges, and star ratings
-* Category taxonomy support with folder icons
-* 100/100/100 PageSpeed optimization
-* Color scheme picker with localStorage persistence
-* Mobile bottom navigation bar with SVG icons
-* Schema.org structured data
-* Breadcrumbs with Yoast SEO fallback
-* Customizer settings
-* Translation ready
+= 1.0.0 — 2026-06-12 =
+* Added glassmorphic design with 8 accessible color schemes
+* Added SVG icon system with 30+ inline icons
+* Added directory home page template
+* Added listing grid with glass cards, status badges, and star ratings
+* Added category taxonomy support with folder icons
+* Added 100/100/100 PageSpeed optimization
+* Added color scheme picker with localStorage persistence
+* Added mobile bottom navigation bar with SVG icons
+* Added Schema.org structured data
+* Added breadcrumbs with Yoast SEO fallback
+* Added customizer settings
+* Added translation ready POT file
 * Fixed meta-theme-color sync on theme/scheme switch
+* Fixed aria-pressed initial state on theme toggle
+* Fixed active class on scheme dots on initial load
 * Added external-link icons to visit buttons
+* Added AGENTS.md for AI agent documentation
+* Added docs/getting-started.md for user documentation

@@ -150,6 +150,8 @@ All icons use `currentColor` for stroke/fill, so they inherit the theme's accent
 
 ## Changelog
 
+See [CHANGELOG.md](CHANGELOG.md) for the full release history.
+
 ### 1.0.0 — Initial Release
 
 - Glassmorphic design with 8 color schemes
