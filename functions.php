@@ -70,14 +70,16 @@ function dxadult_scripts() {
 	// Critical CSS is inlined in header.php.
 	// Deferred main stylesheet — loaded via JS after paint.
 	wp_register_style( 'dxadult-main', DXADULT_URI . '/assets/css/main.css', array(), DXADULT_VERSION );
-	wp_register_script( 'dxadult-loadcss', DXADULT_URI . '/assets/js/main.js', array(), DXADULT_VERSION, true );
+	wp_enqueue_script( 'dxadult-mainjs', DXADULT_URI . '/assets/js/main.js', array(), DXADULT_VERSION, true );
 
-	wp_add_inline_script(
-		'dxadult-loadcss',
-		'dxadultLoadCSS("' . esc_js( DXADULT_URI . '/assets/css/main.css' ) . '","' . esc_js( DXADULT_VERSION ) . '");'
+	wp_localize_script(
+		'dxadult-mainjs',
+		'dxadultData',
+		array(
+			'cssUrl'     => DXADULT_URI . '/assets/css/main.css',
+			'cssVersion' => DXADULT_VERSION,
+		)
 	);
-
-	wp_enqueue_script( 'dxadult-loadcss' );
 
 	wp_enqueue_style( 'dxadult-print', DXADULT_URI . '/assets/css/print.css', array(), DXADULT_VERSION, 'print' );
 

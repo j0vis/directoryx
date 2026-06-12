@@ -110,4 +110,9 @@ function dxadultLoadCSS(href, version) {
 			}
 		});
 	}
+
+	// Load deferred CSS after all event listeners are attached
+	if (typeof dxadultData !== 'undefined') {
+		dxadultLoadCSS(dxadultData.cssUrl, dxadultData.cssVersion);
+	}
 })();
