@@ -140,11 +140,6 @@ remove_action( 'wp_head', 'wp_generator' );
 remove_action( 'wp_head', 'feed_links_extra', 3 );
 
 /**
- * Define accent color default constant.
- */
-define( 'DXADULT_DEFAULT_ACCENT', '#58a6ff' );
-
-/**
  * Add custom image sizes to media library.
  */
 function dxadult_custom_image_sizes( $sizes ) {

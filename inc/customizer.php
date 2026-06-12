@@ -8,45 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function dxadult_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
-		'dxadult_footer_text',
-		array(
-			'default'           => '',
-			'sanitize_callback' => 'wp_kses_post',
-			'transport'         => 'refresh',
-		)
-	);
-
-	$wp_customize->add_control(
-		'dxadult_footer_text',
-		array(
-			'label'       => __( 'Footer Text', 'directoryx-adult' ),
-			'description' => __( 'Custom footer text (HTML allowed).', 'directoryx-adult' ),
-			'section'     => 'title_tagline',
-			'type'        => 'textarea',
-		)
-	);
-
-	$wp_customize->add_setting(
-		'dxadult_accent_color',
-		array(
-			'default'           => DXADULT_DEFAULT_ACCENT,
-			'sanitize_callback' => 'sanitize_hex_color',
-			'transport'         => 'postMessage',
-		)
-	);
-
-	$wp_customize->add_control(
-		new WP_Customize_Color_Control(
-			$wp_customize,
-			'dxadult_accent_color',
-			array(
-				'label'   => __( 'Accent Color', 'directoryx-adult' ),
-				'section' => 'colors',
-			)
-		)
-	);
-
-	$wp_customize->add_setting(
 		'dxadult_default_scheme',
 		array(
 			'default'           => 'midnight',

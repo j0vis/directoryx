@@ -779,6 +779,31 @@ img {
 	color: var(--divider);
 }
 
+/* ── Mobile search overlay ── */
+.mobile-search-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 300;
+	background: var(--glass-bg);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	border-bottom: 1px solid var(--glass-border);
+	padding: 12px 16px;
+	box-shadow: var(--glass-shadow);
+}
+
+.mobile-search-overlay.active {
+	display: block;
+}
+
+.mobile-search-overlay .search-form input[type="search"] {
+	padding: 10px 16px;
+	font-size: 1rem;
+}
+
 /* ── Mobile bottom nav ── */
 .mobile-bottom-nav {
 	display: none;

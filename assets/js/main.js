@@ -66,4 +66,24 @@ function dxadultLoadCSS(href, version) {
 			link.classList.add('active');
 		}
 	});
+
+	// Mobile search toggle
+	var searchToggle = document.querySelector('.mobile-search-toggle');
+	var searchOverlay = document.querySelector('.mobile-search-overlay');
+	var searchInput = searchOverlay ? searchOverlay.querySelector('.search-field') : null;
+
+	if (searchToggle && searchOverlay) {
+		searchToggle.addEventListener('click', function(e) {
+			e.preventDefault();
+			searchOverlay.classList.toggle('active');
+			if (searchOverlay.classList.contains('active') && searchInput) {
+				searchInput.focus();
+			}
+		});
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+				searchOverlay.classList.remove('active');
+			}
+		});
+	}
 })();

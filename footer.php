@@ -14,12 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</footer>
 
+	<div class="mobile-search-overlay">
+		<?php get_search_form(); ?>
+	</div>
+
 	<nav class="mobile-bottom-nav" role="navigation" aria-label="<?php esc_attr_e( 'Mobile navigation', 'directoryx-adult' ); ?>">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<span class="nav-icon" aria-hidden="true">&#x2302;</span>
 			<?php esc_html_e( 'Home', 'directoryx-adult' ); ?>
 		</a>
-		<a href="<?php echo esc_url( home_url( '/?s=' ) ); ?>">
+		<a href="#" class="mobile-search-toggle" aria-label="<?php esc_attr_e( 'Toggle search', 'directoryx-adult' ); ?>">
 			<span class="nav-icon" aria-hidden="true">&#x1F50D;</span>
 			<?php esc_html_e( 'Search', 'directoryx-adult' ); ?>
 		</a>
