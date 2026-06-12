@@ -47,25 +47,26 @@ function dxadult_customize_register( $wp_customize ) {
 	);
 
 	$wp_customize->add_setting(
-		'dxadult_grid_columns',
+		'dxadult_default_scheme',
 		array(
-			'default'           => 3,
-			'sanitize_callback' => 'absint',
+			'default'           => 'midnight',
+			'sanitize_callback' => 'sanitize_text_field',
 			'transport'         => 'refresh',
 		)
 	);
 
 	$wp_customize->add_control(
-		'dxadult_grid_columns',
+		'dxadult_default_scheme',
 		array(
-			'label'       => __( 'Grid Columns', 'directoryx-adult' ),
-			'description' => __( 'Number of columns in the listing grid (2-5).', 'directoryx-adult' ),
-			'section'     => 'title_tagline',
-			'type'        => 'number',
-			'input_attrs' => array(
-				'min'  => 2,
-				'max'  => 5,
-				'step' => 1,
+			'label'       => __( 'Default Color Scheme', 'directoryx-adult' ),
+			'description' => __( 'Users can override this via the theme color picker.', 'directoryx-adult' ),
+			'section'     => 'colors',
+			'type'        => 'select',
+			'choices'     => array(
+				'midnight' => __( 'Midnight Blue', 'directoryx-adult' ),
+				'emerald'  => __( 'Emerald Green', 'directoryx-adult' ),
+				'ruby'     => __( 'Ruby Red', 'directoryx-adult' ),
+				'amethyst' => __( 'Amethyst Purple', 'directoryx-adult' ),
 			),
 		)
 	);
@@ -76,14 +77,22 @@ add_action( 'customize_register', 'dxadult_customize_register' );
  * Output customizer styles.
  */
 function dxadult_customizer_css() {
-	$accent = get_theme_mod( 'dxadult_accent_color', DXADULT_DEFAULT_ACCENT );
-	if ( DXADULT_DEFAULT_ACCENT === $accent ) {
+	$scheme = get_theme_mod( 'dxadult_default_scheme', 'midnight' );
+	if ( 'midnight' === $scheme ) {
+		return;
+	}
+	$accent_map = array(
+		'emerald'  => '#3fb950',
+		'ruby'     => '#f85149',
+		'amethyst' => '#bc8cff',
+	);
+	$accent = isset( $accent_map[ $scheme ] ) ? $accent_map[ $scheme ] : '';
+	if ( ! $accent ) {
 		return;
 	}
 	?>
 	<style>
-		a, .button, .site-title a { color: <?php echo esc_attr( $accent ); ?>; }
-		.button, .listing-status--active { border-color: <?php echo esc_attr( $accent ); ?>; }
+		:root { --accent: <?php echo esc_attr( $accent ); ?>; }
 	</style>
 	<?php
 }

@@ -1,6 +1,7 @@
 /**
  * DirectoryX Adult — Deferred JS
  * Loads non-critical CSS after first paint for 100/100/100 PageSpeed.
+ * Glassmorphic color scheme switcher + mobile bottom nav.
  */
 function dxadultLoadCSS(href, version) {
 	var link = document.createElement('link');
@@ -33,6 +34,36 @@ function dxadultLoadCSS(href, version) {
 		if (e.key === 'Escape' && nav && nav.classList.contains('toggled')) {
 			nav.classList.remove('toggled');
 			toggle.setAttribute('aria-expanded', 'false');
+		}
+	});
+
+	// Color scheme switcher
+	var dots = document.querySelectorAll('.scheme-dot');
+	var currentScheme = localStorage.getItem('dxadult-scheme') || 'midnight';
+
+	function applyScheme(scheme) {
+		document.documentElement.setAttribute('data-scheme', scheme);
+		localStorage.setItem('dxadult-scheme', scheme);
+		dots.forEach(function(d) {
+			d.classList.toggle('active', d.getAttribute('data-scheme') === scheme);
+		});
+	}
+
+	if (dots.length) {
+		applyScheme(currentScheme);
+		dots.forEach(function(dot) {
+			dot.addEventListener('click', function() {
+				applyScheme(this.getAttribute('data-scheme'));
+			});
+		});
+	}
+
+	// Mobile bottom nav: highlight current page
+	var navLinks = document.querySelectorAll('.mobile-bottom-nav a');
+	var currentPath = window.location.pathname;
+	navLinks.forEach(function(link) {
+		if (link.getAttribute('href') === currentPath) {
+			link.classList.add('active');
 		}
 	});
 })();
