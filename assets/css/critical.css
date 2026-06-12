@@ -83,6 +83,34 @@
 	--card-hover-border: rgba(188, 140, 255, 0.4);
 }
 
+[data-scheme="amber"] {
+	--accent: #e3b341;
+	--accent-hover: #f0c75e;
+	--accent-glow: rgba(227, 179, 65, 0.25);
+	--card-hover-border: rgba(227, 179, 65, 0.4);
+}
+
+[data-scheme="coral"] {
+	--accent: #ff7b72;
+	--accent-hover: #ffa69e;
+	--accent-glow: rgba(255, 123, 114, 0.25);
+	--card-hover-border: rgba(255, 123, 114, 0.4);
+}
+
+[data-scheme="ocean"] {
+	--accent: #39d0d8;
+	--accent-hover: #56e5ed;
+	--accent-glow: rgba(57, 208, 216, 0.25);
+	--card-hover-border: rgba(57, 208, 216, 0.4);
+}
+
+[data-scheme="slate"] {
+	--accent: #a5b4fc;
+	--accent-hover: #c7d2fe;
+	--accent-glow: rgba(165, 180, 252, 0.25);
+	--card-hover-border: rgba(165, 180, 252, 0.4);
+}
+
 [data-theme="light"][data-scheme="emerald"] {
 	--accent: #1a7f37;
 	--accent-hover: #116329;
@@ -102,6 +130,34 @@
 	--accent-hover: #6639ba;
 	--accent-glow: rgba(130, 80, 223, 0.15);
 	--card-hover-border: rgba(130, 80, 223, 0.3);
+}
+
+[data-theme="light"][data-scheme="amber"] {
+	--accent: #9a6700;
+	--accent-hover: #7a4f00;
+	--accent-glow: rgba(154, 103, 0, 0.15);
+	--card-hover-border: rgba(154, 103, 0, 0.3);
+}
+
+[data-theme="light"][data-scheme="coral"] {
+	--accent: #cf4a3a;
+	--accent-hover: #a3382b;
+	--accent-glow: rgba(207, 74, 58, 0.15);
+	--card-hover-border: rgba(207, 74, 58, 0.3);
+}
+
+[data-theme="light"][data-scheme="ocean"] {
+	--accent: #0d7d7d;
+	--accent-hover: #095f5f;
+	--accent-glow: rgba(13, 125, 125, 0.15);
+	--card-hover-border: rgba(13, 125, 125, 0.3);
+}
+
+[data-theme="light"][data-scheme="slate"] {
+	--accent: #6366f1;
+	--accent-hover: #4f46e5;
+	--accent-glow: rgba(99, 102, 241, 0.15);
+	--card-hover-border: rgba(99, 102, 241, 0.3);
 }
 
 *,
@@ -390,6 +446,10 @@ img {
 .scheme-dot[data-scheme="emerald"]  { --dot-color: #3fb950; }
 .scheme-dot[data-scheme="ruby"]     { --dot-color: #f85149; }
 .scheme-dot[data-scheme="amethyst"] { --dot-color: #bc8cff; }
+.scheme-dot[data-scheme="amber"]    { --dot-color: #e3b341; }
+.scheme-dot[data-scheme="coral"]    { --dot-color: #ff7b72; }
+.scheme-dot[data-scheme="ocean"]    { --dot-color: #39d0d8; }
+.scheme-dot[data-scheme="slate"]    { --dot-color: #a5b4fc; }
 
 [data-theme="light"] .scheme-dot {
 	border-color: rgba(0, 0, 0, 0.15);
@@ -399,6 +459,10 @@ img {
 [data-theme="light"] .scheme-dot[data-scheme="emerald"]  { --dot-color: #1a7f37; }
 [data-theme="light"] .scheme-dot[data-scheme="ruby"]     { --dot-color: #cf222e; }
 [data-theme="light"] .scheme-dot[data-scheme="amethyst"] { --dot-color: #8250df; }
+[data-theme="light"] .scheme-dot[data-scheme="amber"]    { --dot-color: #9a6700; }
+[data-theme="light"] .scheme-dot[data-scheme="coral"]    { --dot-color: #cf4a3a; }
+[data-theme="light"] .scheme-dot[data-scheme="ocean"]    { --dot-color: #0d7d7d; }
+[data-theme="light"] .scheme-dot[data-scheme="slate"]    { --dot-color: #6366f1; }
 
 /* ── Theme toggle ── */
 .theme-toggle {
@@ -675,7 +739,7 @@ img {
 	font-size: .875rem;
 	font-weight: 500;
 	cursor: pointer;
-	transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+	transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .button:hover,
@@ -685,6 +749,7 @@ img {
 	color: var(--accent);
 	text-decoration: none;
 	box-shadow: 0 0 12px var(--accent-glow);
+	transform: translateY(-1px);
 }
 
 .button--small {
@@ -701,6 +766,12 @@ img {
 .button--visit:hover {
 	background: var(--accent);
 	color: #fff;
+}
+
+.button svg {
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
 }
 
 /* ── Category grid ── */
@@ -744,6 +815,21 @@ img {
 	text-decoration: none;
 }
 
+.category-card__icon {
+	margin-bottom: 8px;
+	color: var(--accent);
+	transition: transform 0.3s;
+}
+
+.category-card:hover .category-card__icon {
+	transform: scale(1.1);
+}
+
+.category-card__icon svg {
+	width: 18px;
+	height: 18px;
+}
+
 .category-name {
 	font-weight: 600;
 	font-size: 1rem;
@@ -760,6 +846,15 @@ img {
 	font-size: .8rem;
 	color: var(--text-muted);
 	margin-top: 4px;
+}
+
+/* ── Listing card meta ── */
+.listing-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+	flex-wrap: wrap;
 }
 
 /* ── Sections ── */
@@ -1139,6 +1234,14 @@ img {
 	.mobile-bottom-nav .nav-icon {
 		font-size: 1.2rem;
 		line-height: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.mobile-bottom-nav .nav-icon svg {
+		width: 20px;
+		height: 20px;
 	}
 
 	.site-footer {

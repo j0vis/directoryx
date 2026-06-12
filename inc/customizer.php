@@ -51,6 +51,10 @@ function dxadult_customize_register( $wp_customize ) {
 				'emerald'  => __( 'Emerald Green', 'directoryx-adult' ),
 				'ruby'     => __( 'Ruby Red', 'directoryx-adult' ),
 				'amethyst' => __( 'Amethyst Purple', 'directoryx-adult' ),
+				'amber'    => __( 'Amber Gold', 'directoryx-adult' ),
+				'coral'    => __( 'Coral Orange', 'directoryx-adult' ),
+				'ocean'    => __( 'Ocean Teal', 'directoryx-adult' ),
+				'slate'    => __( 'Slate Indigo', 'directoryx-adult' ),
 			),
 		)
 	);

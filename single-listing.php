@@ -19,6 +19,8 @@ get_header();
 				<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 				<div class="entry-meta">
 					<span class="entry-categories"><?php echo implode( ', ', dxadult_get_category_links() ); ?></span>
+					<?php dxadult_listing_status(); ?>
+					<?php dxadult_listing_rating(); ?>
 				</div>
 			</header>
 

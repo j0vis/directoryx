@@ -65,6 +65,10 @@ if ( function_exists( 'wp_body_open' ) ) {
 					<button class="scheme-dot" data-scheme="emerald" type="button" role="radio" aria-label="<?php esc_attr_e( 'Emerald green', 'directoryx-adult' ); ?>"></button>
 					<button class="scheme-dot" data-scheme="ruby" type="button" role="radio" aria-label="<?php esc_attr_e( 'Ruby red', 'directoryx-adult' ); ?>"></button>
 					<button class="scheme-dot" data-scheme="amethyst" type="button" role="radio" aria-label="<?php esc_attr_e( 'Amethyst purple', 'directoryx-adult' ); ?>"></button>
+					<button class="scheme-dot" data-scheme="amber" type="button" role="radio" aria-label="<?php esc_attr_e( 'Amber gold', 'directoryx-adult' ); ?>"></button>
+					<button class="scheme-dot" data-scheme="coral" type="button" role="radio" aria-label="<?php esc_attr_e( 'Coral orange', 'directoryx-adult' ); ?>"></button>
+					<button class="scheme-dot" data-scheme="ocean" type="button" role="radio" aria-label="<?php esc_attr_e( 'Ocean teal', 'directoryx-adult' ); ?>"></button>
+					<button class="scheme-dot" data-scheme="slate" type="button" role="radio" aria-label="<?php esc_attr_e( 'Slate indigo', 'directoryx-adult' ); ?>"></button>
 				</div>
 
 				<button class="theme-toggle" id="theme-toggle" type="button" aria-label="<?php esc_attr_e( 'Toggle theme', 'directoryx-adult' ); ?>" aria-pressed="false">

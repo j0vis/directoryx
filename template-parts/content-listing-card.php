@@ -11,6 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php endif; ?>
 
 	<div class="listing-card__body">
+		<div class="listing-card__meta">
+			<?php dxadult_listing_status(); ?>
+			<?php dxadult_listing_rating(); ?>
+		</div>
+
 		<h3 class="listing-card__title">
 			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 		</h3>

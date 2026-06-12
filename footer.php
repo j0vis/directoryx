@@ -18,15 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<nav class="mobile-bottom-nav" role="navigation" aria-label="<?php esc_attr_e( 'Mobile navigation', 'directoryx-adult' ); ?>">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<span class="nav-icon" aria-hidden="true">&#x2302;</span>
+			<span class="nav-icon" aria-hidden="true"><?php dxadult_icon( 'home', '20' ); ?></span>
 			<?php esc_html_e( 'Home', 'directoryx-adult' ); ?>
 		</a>
 		<a href="#" class="mobile-search-toggle" aria-label="<?php esc_attr_e( 'Toggle search', 'directoryx-adult' ); ?>">
-			<span class="nav-icon" aria-hidden="true">&#x1F50D;</span>
+			<span class="nav-icon" aria-hidden="true"><?php dxadult_icon( 'search', '20' ); ?></span>
 			<?php esc_html_e( 'Search', 'directoryx-adult' ); ?>
 		</a>
 		<a href="<?php echo esc_url( get_post_type_archive_link( 'listing' ) ); ?>">
-			<span class="nav-icon" aria-hidden="true">&#x2630;</span>
+			<span class="nav-icon" aria-hidden="true"><?php dxadult_icon( 'list', '20' ); ?></span>
 			<?php esc_html_e( 'Listings', 'directoryx-adult' ); ?>
 		</a>
 	</nav>

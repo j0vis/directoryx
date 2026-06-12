@@ -43,6 +43,7 @@ function dxadult_listing_url_button( $label = '', $class = 'button button--visit
 	}
 	echo '<a href="' . esc_url( $url ) . '" class="' . esc_attr( $class ) . '" rel="nofollow noopener" target="_blank">';
 	echo esc_html( $label );
+	echo dxadult_get_icon( 'external-link', '14' );
 	echo '</a>';
 	if ( $wrap ) {
 		echo '</div>';
@@ -71,13 +72,13 @@ function dxadult_listing_rating( $post_id = 0 ) {
 
 	echo '<span class="listing-rating" role="img" aria-label="' . esc_attr( sprintf( __( 'Rated %s out of 5', 'directoryx-adult' ), $rating ) ) . '">';
 	for ( $i = 0; $i < $full; $i++ ) {
-		echo '<span class="star star--full" aria-hidden="true">★</span>';
+		echo '<span class="star star--full" aria-hidden="true">' . dxadult_get_icon( 'star-full', '14' ) . '</span>';
 	}
 	if ( $half ) {
-		echo '<span class="star star--half" aria-hidden="true">★</span>';
+		echo '<span class="star star--half" aria-hidden="true">' . dxadult_get_icon( 'star-half', '14' ) . '</span>';
 	}
 	for ( $i = 0; $i < $empty; $i++ ) {
-		echo '<span class="star star--empty" aria-hidden="true">☆</span>';
+		echo '<span class="star star--empty" aria-hidden="true">' . dxadult_get_icon( 'star-empty', '14' ) . '</span>';
 	}
 	echo ' <span class="rating-value">' . esc_html( number_format_i18n( $rating, 1 ) ) . '</span>';
 	echo '</span>';

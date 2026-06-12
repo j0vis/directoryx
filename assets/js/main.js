@@ -40,6 +40,23 @@ function dxadultLoadCSS(href, version) {
 	// Color scheme switcher
 	var dots = document.querySelectorAll('.scheme-dot');
 	var currentScheme = localStorage.getItem('dxadult-scheme') || 'midnight';
+	var schemeColors = {
+		midnight: { dark: '#0d1117', light: '#f6f8fa' },
+		emerald:  { dark: '#3fb950', light: '#1a7f37' },
+		ruby:     { dark: '#f85149', light: '#cf222e' },
+		amethyst: { dark: '#bc8cff', light: '#8250df' },
+		amber:    { dark: '#e3b341', light: '#9a6700' },
+		coral:    { dark: '#ff7b72', light: '#cf4a3a' },
+		ocean:    { dark: '#39d0d8', light: '#0d7d7d' },
+		slate:    { dark: '#a5b4fc', light: '#6366f1' }
+	};
+
+	function updateMetaThemeColor(theme, scheme) {
+		if (metaThemeColor) {
+			var colors = schemeColors[scheme] || schemeColors['midnight'];
+			metaThemeColor.setAttribute('content', colors[theme]);
+		}
+	}
 
 	function applyScheme(scheme) {
 		document.documentElement.setAttribute('data-scheme', scheme);
@@ -47,6 +64,8 @@ function dxadultLoadCSS(href, version) {
 		dots.forEach(function(d) {
 			d.classList.toggle('active', d.getAttribute('data-scheme') === scheme);
 		});
+		var currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('dxadult-theme') || 'dark';
+		updateMetaThemeColor(currentTheme, scheme);
 	}
 
 	if (dots.length) {
@@ -69,9 +88,8 @@ function dxadultLoadCSS(href, version) {
 		if (themeToggle) {
 			themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
 		}
-		if (metaThemeColor) {
-			metaThemeColor.setAttribute('content', theme === 'light' ? '#f6f8fa' : '#0d1117');
-		}
+		var activeScheme = document.documentElement.getAttribute('data-scheme') || currentScheme;
+		updateMetaThemeColor(theme, activeScheme);
 	}
 
 	if (themeToggle) {
@@ -80,6 +98,8 @@ function dxadultLoadCSS(href, version) {
 			var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 			applyTheme(next);
 		});
+	} else {
+		applyTheme(currentTheme);
 	}
 
 	// Mobile bottom nav: highlight current page

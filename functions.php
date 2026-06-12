@@ -238,6 +238,7 @@ add_action( 'wp_ajax_nopriv_dxadult_ajax_search', 'dxadult_ajax_search' );
 /**
  * Load modular includes.
  */
+require_once DXADULT_DIR . '/inc/svg-icons.php';
 require_once DXADULT_DIR . '/inc/template-tags.php';
 require_once DXADULT_DIR . '/inc/template-functions.php';
 require_once DXADULT_DIR . '/inc/customizer.php';

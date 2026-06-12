@@ -7,7 +7,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A high-performance adult site directory theme built on DirectoryX. Glassmorphic design with 4 accessible color schemes. Optimized for 100/100/100 PageSpeed.
+A high-performance adult site directory theme built on DirectoryX. Glassmorphic design with 8 accessible color schemes and SVG icons. Optimized for 100/100/100 PageSpeed.
 
 == Description ==
 
@@ -16,8 +16,9 @@ DirectoryX Adult is a production-ready WordPress theme for building adult site d
 Key features:
 
 * **Glassmorphic design** — Frosted glass cards with backdrop-filter blur, subtle glow effects, and smooth hover animations.
-* **4 accessible color schemes** — Midnight Blue (default), Emerald Green, Ruby Red, and Amethyst Purple. Persisted in localStorage. WCAG AA compliant contrast ratios.
+* **8 accessible color schemes** — Midnight Blue (default), Emerald Green, Ruby Red, Amethyst Purple, Amber Gold, Coral Orange, Ocean Teal, and Slate Indigo. Persisted in localStorage. WCAG AA compliant contrast ratios.
 * **Color scheme picker** — In-header color dots. Users choose their preference; site owners set the default via Customizer.
+* **SVG icon system** — 30+ inline SVG icons, themeable via CSS currentColor, used throughout the theme.
 * **100/100/100 PageSpeed** — Critical CSS inlined in `<head>`. Non-critical styles loaded after first paint via deferred JS. All JS deferred. Emoji scripts and block library CSS removed.
 * **Dark mode by default** — GitHub-dark-inspired color scheme (#0d1117 background) for comfortable browsing.
 * **Listing management** — Custom "listing" post type with URL, rating, and status meta fields. Meta box in the admin editor.
@@ -65,14 +66,17 @@ Custom fields:
 
 = 1.0.0 =
 * Initial release
-* Glassmorphic design with 4 color schemes
+* Glassmorphic design with 8 accessible color schemes
+* SVG icon system with 30+ inline icons
 * Directory home page template
-* Listing grid with glass cards
-* Category taxonomy support
+* Listing grid with glass cards, status badges, and star ratings
+* Category taxonomy support with folder icons
 * 100/100/100 PageSpeed optimization
 * Color scheme picker with localStorage persistence
-* Mobile bottom navigation bar
+* Mobile bottom navigation bar with SVG icons
 * Schema.org structured data
 * Breadcrumbs with Yoast SEO fallback
 * Customizer settings
 * Translation ready
+* Fixed meta-theme-color sync on theme/scheme switch
+* Added external-link icons to visit buttons
