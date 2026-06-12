@@ -318,21 +318,28 @@ function dxadultLoadCSS(href, version) {
 		}
 	});
 
-	/* ── IntersectionObserver for card entrance animations ── */
+	/* ── IntersectionObserver for card entrance animations (CSS-class driven) ── */
 	if ('IntersectionObserver' in window) {
 		var io = new IntersectionObserver(function(entries) {
 			entries.forEach(function(en) {
 				if (en.isIntersecting) {
-					en.target.style.animationPlayState = 'running';
+					en.target.classList.add('is-visible');
 					io.unobserve(en.target);
 				}
 			});
 		}, { rootMargin: '50px' });
 		$$('.listing-card, .category-card').forEach(function(el) {
-			el.style.animationPlayState = 'paused';
 			io.observe(el);
 		});
 	}
+
+	/* ── Archive filter auto-submit (progressive enhancement) ── */
+	$$('.archive-filters__auto-submit').forEach(function(sel) {
+		sel.addEventListener('change', function() {
+			var form = sel.closest('form');
+			if (form) form.submit();
+		});
+	});
 
 	/* ── Instant prefetch (hover/touchstart) ── */
 	if ('requestIdleCallback' in window) {

@@ -275,11 +275,12 @@ function dxadult_handle_report_listing() {
 
 	$reports   = get_post_meta( $listing_id, 'listing_reports', true );
 	$reports   = is_array( $reports ) ? $reports : array();
+	$raw_ip    = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	$reports[] = array(
 		'reason'  => $reason,
 		'details' => $details,
 		'time'    => time(),
-		'ip'      => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+		'ip'      => $raw_ip ? wp_hash( $raw_ip . AUTH_SALT ) : '',
 	);
 	update_post_meta( $listing_id, 'listing_reports', $reports );
 
@@ -292,6 +293,44 @@ add_action( 'admin_post_nopriv_dxadult_report_listing', 'dxadult_handle_report_l
 /**
  * Custom REST API endpoint for filtering listings.
  */
+/**
+ * Track recently viewed listings via cookie.
+ *
+ * Runs on the 'wp' hook after the main query is set so we can read
+ * `get_queried_object_id()` reliably. The cookie is HttpOnly and same-site Lax
+ * for CSRF mitigation.
+ */
+function dxadult_track_recently_viewed() {
+	if ( ! is_singular( 'listing' ) ) {
+		return;
+	}
+	$current_id = get_queried_object_id();
+	if ( ! $current_id ) {
+		return;
+	}
+	$cookie = isset( $_COOKIE['dxadult_recent'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['dxadult_recent'] ) ) : '';
+	$recent = array_filter( array_map( 'intval', explode( ',', $cookie ) ) );
+	$recent = array_values( array_unique( array_merge( array( $current_id ), array_diff( $recent, array( $current_id ) ) ) ) );
+	$recent = array_slice( $recent, 0, 20 );
+
+	if ( headers_sent() ) {
+		return;
+	}
+	setcookie(
+		'dxadult_recent',
+		implode( ',', $recent ),
+		array(
+			'expires'  => time() + 30 * DAY_IN_SECONDS,
+			'path'     => COOKIEPATH,
+			'domain'   => COOKIE_DOMAIN,
+			'secure'   => is_ssl(),
+			'httponly' => true,
+			'samesite' => 'Lax',
+		)
+	);
+}
+add_action( 'wp', 'dxadult_track_recently_viewed' );
+
 function dxadult_register_rest_routes() {
 	register_rest_route(
 		'directoryx/v1',

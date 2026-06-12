@@ -5,12 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-// Track recently viewed in cookie.
-$recent = isset( $_COOKIE['dxadult_recent'] ) ? array_map( 'intval', explode( ',', sanitize_text_field( wp_unslash( $_COOKIE['dxadult_recent'] ) ) ) ) : array();
-$current_id = get_the_ID();
-$recent = array_values( array_unique( array_merge( array( $current_id ), array_diff( $recent, array( $current_id ) ) ) ) );
-$recent = array_slice( $recent, 0, 20 );
-setcookie( 'dxadult_recent', implode( ',', $recent ), time() + 30 * DAY_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
+// Recently-viewed cookie is now managed by dxadult_track_recently_viewed() on the 'wp' hook in functions.php.
 ?>
 
 <main id="primary" class="site-main" role="main">

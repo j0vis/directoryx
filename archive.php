@@ -29,9 +29,10 @@ $all_categories = get_terms( array(
 
 	<div class="archive-toolbar">
 		<form class="archive-filters" method="get">
+		<?php wp_nonce_field( 'dxadult_archive_filter', 'dxadult_archive_filter_nonce' ); ?>
 			<div class="archive-filters__group">
 				<label for="sort-select"><?php esc_html_e( 'Sort:', 'directoryx-adult' ); ?></label>
-				<select id="sort-select" name="sort" onchange="this.form.submit()">
+				<select id="sort-select" name="sort" class="archive-filters__auto-submit">
 					<?php foreach ( $valid_sorts as $key => $label ) : ?>
 						<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $current_sort, $key ); ?>><?php echo esc_html( $label ); ?></option>
 					<?php endforeach; ?>
@@ -41,7 +42,7 @@ $all_categories = get_terms( array(
 			<?php if ( ! empty( $all_categories ) && ! is_wp_error( $all_categories ) ) : ?>
 			<div class="archive-filters__group">
 				<label for="cat-select"><?php esc_html_e( 'Category:', 'directoryx-adult' ); ?></label>
-				<select id="cat-select" name="cat" onchange="this.form.submit()">
+				<select id="cat-select" name="cat" class="archive-filters__auto-submit">
 					<option value="0"><?php esc_html_e( 'All', 'directoryx-adult' ); ?></option>
 					<?php foreach ( $all_categories as $cat ) : ?>
 						<option value="<?php echo esc_attr( $cat->term_id ); ?>" <?php selected( $current_cat, $cat->term_id ); ?>><?php echo esc_html( $cat->name ); ?></option>
@@ -52,7 +53,7 @@ $all_categories = get_terms( array(
 
 			<div class="archive-filters__group">
 				<label for="status-select"><?php esc_html_e( 'Status:', 'directoryx-adult' ); ?></label>
-				<select id="status-select" name="status" onchange="this.form.submit()">
+				<select id="status-select" name="status" class="archive-filters__auto-submit">
 					<option value=""><?php esc_html_e( 'All', 'directoryx-adult' ); ?></option>
 					<?php foreach ( $valid_statuses as $st ) : ?>
 						<option value="<?php echo esc_attr( $st ); ?>" <?php selected( $current_status, $st ); ?>><?php echo esc_html( ucfirst( $st ) ); ?></option>
@@ -62,7 +63,7 @@ $all_categories = get_terms( array(
 
 			<div class="archive-filters__group">
 				<label for="min-rating"><?php esc_html_e( 'Min rating:', 'directoryx-adult' ); ?></label>
-				<select id="min-rating" name="min_rating" onchange="this.form.submit()">
+				<select id="min-rating" name="min_rating" class="archive-filters__auto-submit">
 					<option value="0"><?php esc_html_e( 'Any', 'directoryx-adult' ); ?></option>
 					<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
 						<option value="<?php echo esc_attr( $i ); ?>" <?php selected( $current_min_r, $i ); ?>>★ <?php echo esc_html( $i ); ?>+</option>

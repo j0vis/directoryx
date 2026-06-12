@@ -1123,6 +1123,28 @@ img {
 	color: var(--divider);
 }
 
+/* ── IntersectionObserver entrance animation (class-toggled) ── */
+.listing-card,
+.category-card {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	will-change: opacity, transform;
+}
+.listing-card.is-visible,
+.category-card.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+	.listing-card,
+	.category-card {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
 /* ── Mobile search overlay ── */
 .mobile-search-overlay {
 	display: none;
