@@ -62,6 +62,48 @@
 	--toggle-hover: rgba(0, 0, 0, 0.08);
 }
 
+[data-scheme="emerald"] {
+	--accent: #3fb950;
+	--accent-hover: #56d364;
+	--accent-glow: rgba(63, 185, 80, 0.25);
+	--card-hover-border: rgba(63, 185, 80, 0.4);
+}
+
+[data-scheme="ruby"] {
+	--accent: #f85149;
+	--accent-hover: #ff6b63;
+	--accent-glow: rgba(248, 81, 73, 0.25);
+	--card-hover-border: rgba(248, 81, 73, 0.4);
+}
+
+[data-scheme="amethyst"] {
+	--accent: #bc8cff;
+	--accent-hover: #d2a8ff;
+	--accent-glow: rgba(188, 140, 255, 0.25);
+	--card-hover-border: rgba(188, 140, 255, 0.4);
+}
+
+[data-theme="light"][data-scheme="emerald"] {
+	--accent: #1a7f37;
+	--accent-hover: #116329;
+	--accent-glow: rgba(26, 127, 55, 0.15);
+	--card-hover-border: rgba(26, 127, 55, 0.3);
+}
+
+[data-theme="light"][data-scheme="ruby"] {
+	--accent: #cf222e;
+	--accent-hover: #a40e1a;
+	--accent-glow: rgba(207, 34, 46, 0.15);
+	--card-hover-border: rgba(207, 34, 46, 0.3);
+}
+
+[data-theme="light"][data-scheme="amethyst"] {
+	--accent: #8250df;
+	--accent-hover: #6639ba;
+	--accent-glow: rgba(130, 80, 223, 0.15);
+	--card-hover-border: rgba(130, 80, 223, 0.3);
+}
+
 *,
 *::before,
 *::after {
@@ -228,6 +270,46 @@ img {
 	transform: scale(1.1);
 }
 
+/* ── Color scheme picker ── */
+.scheme-picker {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+.scheme-dot {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid rgba(255, 255, 255, 0.15);
+	cursor: pointer;
+	transition: border-color 0.2s, transform 0.2s;
+	background: var(--dot-color);
+}
+
+.scheme-dot:hover {
+	transform: scale(1.2);
+}
+
+.scheme-dot.active {
+	border-color: var(--accent);
+	box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.scheme-dot[data-scheme="midnight"] { --dot-color: #58a6ff; }
+.scheme-dot[data-scheme="emerald"]  { --dot-color: #3fb950; }
+.scheme-dot[data-scheme="ruby"]     { --dot-color: #f85149; }
+.scheme-dot[data-scheme="amethyst"] { --dot-color: #bc8cff; }
+
+[data-theme="light"] .scheme-dot {
+	border-color: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .scheme-dot[data-scheme="midnight"] { --dot-color: #0969da; }
+[data-theme="light"] .scheme-dot[data-scheme="emerald"]  { --dot-color: #1a7f37; }
+[data-theme="light"] .scheme-dot[data-scheme="ruby"]     { --dot-color: #cf222e; }
+[data-theme="light"] .scheme-dot[data-scheme="amethyst"] { --dot-color: #8250df; }
+
 /* ── Theme toggle ── */
 .theme-toggle {
 	display: flex;
@@ -265,8 +347,8 @@ img {
 .theme-toggle-icon .icon-sun,
 .theme-toggle-icon .icon-moon {
 	position: absolute;
-	font-size: 18px;
-	line-height: 1;
+	width: 18px;
+	height: 18px;
 	transition: opacity 0.3s, transform 0.3s;
 }
 

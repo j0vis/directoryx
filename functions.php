@@ -164,7 +164,9 @@ function dxadult_body_classes( $classes ) {
 		$classes[] = 'has-sidebar';
 	}
 	$theme = get_theme_mod( 'dxadult_default_theme', 'dark' );
+	$scheme = get_theme_mod( 'dxadult_default_scheme', 'midnight' );
 	$classes[] = 'theme--' . esc_attr( $theme );
+	$classes[] = 'scheme--' . esc_attr( $scheme );
 	return $classes;
 }
 add_filter( 'body_class', 'dxadult_body_classes' );

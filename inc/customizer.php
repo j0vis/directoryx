@@ -29,21 +29,30 @@ function dxadult_customize_register( $wp_customize ) {
 			),
 		)
 	);
+
+	$wp_customize->add_setting(
+		'dxadult_default_scheme',
+		array(
+			'default'           => 'midnight',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+
+	$wp_customize->add_control(
+		'dxadult_default_scheme',
+		array(
+			'label'       => __( 'Default Accent Scheme', 'directoryx-adult' ),
+			'description' => __( 'Accent color used across the theme.', 'directoryx-adult' ),
+			'section'     => 'colors',
+			'type'        => 'select',
+			'choices'     => array(
+				'midnight' => __( 'Midnight Blue', 'directoryx-adult' ),
+				'emerald'  => __( 'Emerald Green', 'directoryx-adult' ),
+				'ruby'     => __( 'Ruby Red', 'directoryx-adult' ),
+				'amethyst' => __( 'Amethyst Purple', 'directoryx-adult' ),
+			),
+		)
+	);
 }
 add_action( 'customize_register', 'dxadult_customize_register' );
-
-/**
- * Output customizer styles.
- */
-function dxadult_customizer_css() {
-	$theme = get_theme_mod( 'dxadult_default_theme', 'dark' );
-	if ( 'dark' === $theme ) {
-		return;
-	}
-	?>
-	<style>
-		:root { --accent: #0969da; --accent-hover: #0550ae; --accent-glow: rgba(9, 105, 218, 0.15); }
-	</style>
-	<?php
-}
-add_action( 'wp_head', 'dxadult_customizer_css', 20 );

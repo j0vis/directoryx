@@ -37,6 +37,27 @@ function dxadultLoadCSS(href, version) {
 		}
 	});
 
+	// Color scheme switcher
+	var dots = document.querySelectorAll('.scheme-dot');
+	var currentScheme = localStorage.getItem('dxadult-scheme') || 'midnight';
+
+	function applyScheme(scheme) {
+		document.documentElement.setAttribute('data-scheme', scheme);
+		localStorage.setItem('dxadult-scheme', scheme);
+		dots.forEach(function(d) {
+			d.classList.toggle('active', d.getAttribute('data-scheme') === scheme);
+		});
+	}
+
+	if (dots.length) {
+		applyScheme(currentScheme);
+		dots.forEach(function(dot) {
+			dot.addEventListener('click', function() {
+				applyScheme(this.getAttribute('data-scheme'));
+			});
+		});
+	}
+
 	// Light/dark theme toggle
 	var themeToggle = document.getElementById('theme-toggle');
 	var metaThemeColor = document.getElementById('meta-theme-color');
