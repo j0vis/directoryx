@@ -111,6 +111,47 @@ function dxadultLoadCSS(href, version) {
 		});
 	}
 
+	// AJAX search
+	var searchForm = document.querySelector('.search-form');
+	var searchField = searchForm ? searchForm.querySelector('.search-field') : null;
+	var searchResults = document.getElementById('search-results');
+	var searchTimer = null;
+
+	if (searchField && searchResults && typeof dxadultData !== 'undefined') {
+		searchField.addEventListener('input', function() {
+			var q = this.value.trim();
+			clearTimeout(searchTimer);
+			if (q.length < 2) {
+				searchResults.classList.remove('active');
+				searchResults.innerHTML = '';
+				return;
+			}
+			searchTimer = setTimeout(function() {
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', dxadultData.ajaxUrl + '?action=dxadult_ajax_search&q=' + encodeURIComponent(q), true);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState === 4 && xhr.status === 200) {
+						searchResults.innerHTML = xhr.responseText;
+						searchResults.classList.add('active');
+					}
+				};
+				xhr.send();
+			}, 300);
+		});
+
+		document.addEventListener('click', function(e) {
+			if (!searchForm.contains(e.target)) {
+				searchResults.classList.remove('active');
+			}
+		});
+
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape') {
+				searchResults.classList.remove('active');
+			}
+		});
+	}
+
 	// Load deferred CSS after all event listeners are attached
 	if (typeof dxadultData !== 'undefined') {
 		dxadultLoadCSS(dxadultData.cssUrl, dxadultData.cssVersion);

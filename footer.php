@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="footer-inner">
 			<div class="site-info">
-				<?php echo esc_html( date( 'Y' ) ); ?> &ndash; &copy; &ndash; <?php bloginfo( 'name' ); ?>
+				<?php echo esc_html( date( 'Y' ) ); ?> &copy; <?php bloginfo( 'name' ); ?>
 			</div>
 		</div>
 	</footer>

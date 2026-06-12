@@ -78,6 +78,7 @@ function dxadult_scripts() {
 		array(
 			'cssUrl'     => DXADULT_URI . '/assets/css/main.css',
 			'cssVersion' => DXADULT_VERSION,
+			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 		)
 	);
 
@@ -190,6 +191,49 @@ function dxadult_widgets_init() {
 	);
 }
 add_action( 'widgets_init', 'dxadult_widgets_init' );
+
+/**
+ * AJAX search handler.
+ */
+function dxadult_ajax_search() {
+	$q = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
+	if ( strlen( $q ) < 2 ) {
+		wp_die( '<div class="search-no-results">' . esc_html__( 'Type at least 2 characters.', 'directoryx-adult' ) . '</div>' );
+	}
+
+	$args = array(
+		'post_type'      => array( 'listing', 'post', 'page' ),
+		'posts_per_page' => 6,
+		's'              => $q,
+		'no_found_rows'  => true,
+	);
+
+	$query = new WP_Query( $args );
+
+	if ( $query->have_posts() ) :
+		while ( $query->have_posts() ) :
+			$query->the_post();
+			?>
+			<a href="<?php the_permalink(); ?>">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'search-result-thumb', 'loading' => 'lazy' ) ); ?>
+				<?php else : ?>
+					<span class="search-result-thumb" style="background:var(--divider)"></span>
+				<?php endif; ?>
+				<span class="search-result-title"><?php the_title(); ?></span>
+				<span class="search-result-type"><?php echo esc_html( get_post_type_object( get_post_type() )->labels->singular_name ?? get_post_type() ); ?></span>
+			</a>
+			<?php
+		endwhile;
+	else :
+		echo '<div class="search-no-results">' . esc_html__( 'No results found.', 'directoryx-adult' ) . '</div>';
+	endif;
+
+	wp_reset_postdata();
+	wp_die();
+}
+add_action( 'wp_ajax_dxadult_ajax_search', 'dxadult_ajax_search' );
+add_action( 'wp_ajax_nopriv_dxadult_ajax_search', 'dxadult_ajax_search' );
 
 /**
  * Load modular includes.
