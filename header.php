@@ -3,11 +3,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> data-theme="dark">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0d1117" id="meta-theme-color">
+<script>(function(){var t=localStorage.getItem('dxadult-theme')||'dark';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('#meta-theme-color');if(m)m.setAttribute('content',t==='light'?'#f6f8fa':'#0d1117');})();</script>
 <?php wp_head(); ?>
 <style><?php require DXADULT_DIR . '/assets/css/critical.css'; ?></style>
 </head>
@@ -28,6 +29,12 @@ if ( function_exists( 'wp_body_open' ) ) {
 						<div class="site-logo"><?php the_custom_logo(); ?></div>
 					<?php else : ?>
 						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<?php endif; ?>
+					<?php
+					$description = get_bloginfo( 'description', 'display' );
+					if ( $description ) :
+					?>
+					<p class="site-description"><?php echo esc_html( $description ); ?></p>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -53,12 +60,12 @@ if ( function_exists( 'wp_body_open' ) ) {
 					?>
 				</nav>
 
-				<div class="scheme-picker" role="radiogroup" aria-label="<?php esc_attr_e( 'Color scheme', 'directoryx-adult' ); ?>">
-					<button class="scheme-dot" data-scheme="midnight" type="button" role="radio" aria-label="<?php esc_attr_e( 'Midnight blue', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="emerald" type="button" role="radio" aria-label="<?php esc_attr_e( 'Emerald green', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="ruby" type="button" role="radio" aria-label="<?php esc_attr_e( 'Ruby red', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="amethyst" type="button" role="radio" aria-label="<?php esc_attr_e( 'Amethyst purple', 'directoryx-adult' ); ?>"></button>
-				</div>
+				<button class="theme-toggle" id="theme-toggle" type="button" aria-label="<?php esc_attr_e( 'Toggle theme', 'directoryx-adult' ); ?>" aria-pressed="false">
+					<span class="theme-toggle-icon" aria-hidden="true">
+						<span class="icon-sun">☀️</span>
+						<span class="icon-moon">🌙</span>
+					</span>
+				</button>
 			</div>
 		</div>
 	</header>

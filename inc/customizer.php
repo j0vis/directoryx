@@ -8,26 +8,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function dxadult_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
-		'dxadult_default_scheme',
+		'dxadult_default_theme',
 		array(
-			'default'           => 'midnight',
+			'default'           => 'dark',
 			'sanitize_callback' => 'sanitize_text_field',
 			'transport'         => 'refresh',
 		)
 	);
 
 	$wp_customize->add_control(
-		'dxadult_default_scheme',
+		'dxadult_default_theme',
 		array(
-			'label'       => __( 'Default Color Scheme', 'directoryx-adult' ),
-			'description' => __( 'Users can override this via the theme color picker.', 'directoryx-adult' ),
+			'label'       => __( 'Default Theme Mode', 'directoryx-adult' ),
+			'description' => __( 'Users can toggle between light and dark mode via the theme toggle button.', 'directoryx-adult' ),
 			'section'     => 'colors',
 			'type'        => 'select',
 			'choices'     => array(
-				'midnight' => __( 'Midnight Blue', 'directoryx-adult' ),
-				'emerald'  => __( 'Emerald Green', 'directoryx-adult' ),
-				'ruby'     => __( 'Ruby Red', 'directoryx-adult' ),
-				'amethyst' => __( 'Amethyst Purple', 'directoryx-adult' ),
+				'dark'  => __( 'Dark Mode', 'directoryx-adult' ),
+				'light' => __( 'Light Mode', 'directoryx-adult' ),
 			),
 		)
 	);
@@ -38,22 +36,13 @@ add_action( 'customize_register', 'dxadult_customize_register' );
  * Output customizer styles.
  */
 function dxadult_customizer_css() {
-	$scheme = get_theme_mod( 'dxadult_default_scheme', 'midnight' );
-	if ( 'midnight' === $scheme ) {
-		return;
-	}
-	$accent_map = array(
-		'emerald'  => '#3fb950',
-		'ruby'     => '#f85149',
-		'amethyst' => '#bc8cff',
-	);
-	$accent = isset( $accent_map[ $scheme ] ) ? $accent_map[ $scheme ] : '';
-	if ( ! $accent ) {
+	$theme = get_theme_mod( 'dxadult_default_theme', 'dark' );
+	if ( 'dark' === $theme ) {
 		return;
 	}
 	?>
 	<style>
-		:root { --accent: <?php echo esc_attr( $accent ); ?>; }
+		:root { --accent: #0969da; --accent-hover: #0550ae; --accent-glow: rgba(9, 105, 218, 0.15); }
 	</style>
 	<?php
 }

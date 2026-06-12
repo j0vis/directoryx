@@ -163,6 +163,8 @@ function dxadult_body_classes( $classes ) {
 	if ( is_active_sidebar( 'sidebar-1' ) ) {
 		$classes[] = 'has-sidebar';
 	}
+	$theme = get_theme_mod( 'dxadult_default_theme', 'dark' );
+	$classes[] = 'theme--' . esc_attr( $theme );
 	return $classes;
 }
 add_filter( 'body_class', 'dxadult_body_classes' );

@@ -1,7 +1,7 @@
 /**
  * DirectoryX Adult — Deferred JS
  * Loads non-critical CSS after first paint for 100/100/100 PageSpeed.
- * Glassmorphic color scheme switcher + mobile bottom nav.
+ * Light/dark theme toggle + mobile bottom nav.
  */
 function dxadultLoadCSS(href, version) {
 	var link = document.createElement('link');
@@ -37,24 +37,27 @@ function dxadultLoadCSS(href, version) {
 		}
 	});
 
-	// Color scheme switcher
-	var dots = document.querySelectorAll('.scheme-dot');
-	var currentScheme = localStorage.getItem('dxadult-scheme') || 'midnight';
+	// Light/dark theme toggle
+	var themeToggle = document.getElementById('theme-toggle');
+	var metaThemeColor = document.getElementById('meta-theme-color');
+	var currentTheme = localStorage.getItem('dxadult-theme') || 'dark';
 
-	function applyScheme(scheme) {
-		document.documentElement.setAttribute('data-scheme', scheme);
-		localStorage.setItem('dxadult-scheme', scheme);
-		dots.forEach(function(d) {
-			d.classList.toggle('active', d.getAttribute('data-scheme') === scheme);
-		});
+	function applyTheme(theme) {
+		document.documentElement.setAttribute('data-theme', theme);
+		localStorage.setItem('dxadult-theme', theme);
+		if (themeToggle) {
+			themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+		}
+		if (metaThemeColor) {
+			metaThemeColor.setAttribute('content', theme === 'light' ? '#f6f8fa' : '#0d1117');
+		}
 	}
 
-	if (dots.length) {
-		applyScheme(currentScheme);
-		dots.forEach(function(dot) {
-			dot.addEventListener('click', function() {
-				applyScheme(this.getAttribute('data-scheme'));
-			});
+	if (themeToggle) {
+		applyTheme(currentTheme);
+		themeToggle.addEventListener('click', function() {
+			var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+			applyTheme(next);
 		});
 	}
 

@@ -3,7 +3,7 @@ Theme Name: DirectoryX Adult
 Theme URI: https://github.com/j0vis/directoryx
 Author: j0vis
 Author URI: https://github.com/j0vis
-Description: A high-performance adult site directory theme built on DirectoryX. Glassmorphic design with 4 accessible color schemes (Midnight Blue, Emerald Green, Ruby Red, Amethyst Purple). Optimized for 100/100/100 PageSpeed with critical CSS inlining, deferred assets, and semantic HTML5.
+Description: A high-performance adult site directory theme built on DirectoryX. Glassmorphic design with light/dark mode toggle. Optimized for 100/100/100 PageSpeed with critical CSS inlining, deferred assets, and semantic HTML5.
 Version: 1.0.0
 Requires at least: 6.0
 Tested up to: 7.0
@@ -12,7 +12,7 @@ License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: directoryx-adult
 Domain Path: /languages
-Tags: directory, listings, two-columns, right-sidebar, custom-colors, custom-logo, custom-menu, editor-style, featured-images, full-site-editing, grid-layout, theme-options, translation-ready
+Tags: directory, listings, two-columns, right-sidebar, custom-colors, custom-logo, custom-menu, editor-style, featured-images, full-site-editing, grid-layout, theme-options, translation-ready, dark-mode, light-mode
 
 WordPress 2026 / Version 7 compliant.
 */
