@@ -173,6 +173,10 @@ See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 GPL v2 or later — [https://www.gnu.org/licenses/gpl-2.0.html](https://www.gnu.org/licenses/gpl-2.0.html)
 
+## Contributing
+
+We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on code standards, pull requests, and the development workflow.
+
 ## Credits
 
 - Built by [j0vis](https://github.com/j0vis)
