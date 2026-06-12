@@ -6,6 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="footer-inner">
+			<?php
+			if ( has_nav_menu( 'footer' ) ) {
+				wp_nav_menu( array(
+					'theme_location' => 'footer',
+					'container'      => 'nav',
+					'container_class' => 'footer-navigation',
+					'depth'          => 1,
+				) );
+			}
+			?>
 			<div class="site-info">
 				<?php echo esc_html( date( 'Y' ) ); ?> &copy; <?php bloginfo( 'name' ); ?>
 			</div>
@@ -30,6 +40,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php esc_html_e( 'Listings', 'directoryx-adult' ); ?>
 		</a>
 	</nav>
+
+	<div class="scroll-progress" aria-hidden="true"></div>
+
+	<button class="back-to-top" type="button" aria-label="<?php esc_attr_e( 'Back to top', 'directoryx-adult' ); ?>">
+		<?php dxadult_icon( 'arrow-up', '20' ); ?>
+	</button>
+
+	<div class="lightbox" role="dialog" aria-label="<?php esc_attr_e( 'Image viewer', 'directoryx-adult' ); ?>" aria-hidden="true" tabindex="-1">
+		<button class="lightbox__close" type="button" aria-label="<?php esc_attr_e( 'Close', 'directoryx-adult' ); ?>">&times;</button>
+		<img class="lightbox__image" alt="" />
+	</div>
+
+	<div class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
 </div><!-- #page -->
 

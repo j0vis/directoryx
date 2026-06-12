@@ -8,6 +8,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d1117" id="meta-theme-color">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<?php if ( is_singular() && pings_open() ) { ?>
+<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+<?php } ?>
+<?php
+// Open Graph meta tags.
+if ( is_singular() ) {
+	$og_title       = get_the_title();
+	$og_url         = get_permalink();
+	$og_description = wp_strip_all_tags( get_the_excerpt() );
+	$og_image       = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'full' ) : '';
+	$og_type        = 'article';
+} else {
+	$og_title       = get_bloginfo( 'name' );
+	$og_url         = home_url( '/' );
+	$og_description = get_bloginfo( 'description' );
+	$og_image       = '';
+	$og_type        = 'website';
+}
+?>
+<meta property="og:title" content="<?php echo esc_attr( $og_title ); ?>">
+<meta property="og:url" content="<?php echo esc_url( $og_url ); ?>">
+<meta property="og:description" content="<?php echo esc_attr( $og_description ); ?>">
+<meta property="og:type" content="<?php echo esc_attr( $og_type ); ?>">
+<meta property="og:site_name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+<?php if ( $og_image ) : ?>
+<meta property="og:image" content="<?php echo esc_url( $og_image ); ?>">
+<?php endif; ?>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<?php echo esc_attr( $og_title ); ?>">
+<meta name="twitter:description" content="<?php echo esc_attr( $og_description ); ?>">
+<?php if ( $og_image ) : ?>
+<meta name="twitter:image" content="<?php echo esc_url( $og_image ); ?>">
+<?php endif; ?>
+<?php
+$canonical = is_singular() ? get_permalink() : home_url( '/' );
+?>
+<link rel="canonical" href="<?php echo esc_url( $canonical ); ?>">
 <script>(function(){var t=localStorage.getItem('dxadult-theme')||'dark';var s=localStorage.getItem('dxadult-scheme')||'midnight';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-scheme',s);var m=document.querySelector('#meta-theme-color');if(m)m.setAttribute('content',t==='light'?'#f6f8fa':'#0d1117');})();</script>
 <?php wp_head(); ?>
 <style><?php require DXADULT_DIR . '/assets/css/critical.css'; ?></style>

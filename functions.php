@@ -76,9 +76,13 @@ function dxadult_scripts() {
 		'dxadult-mainjs',
 		'dxadultData',
 		array(
-			'cssUrl'     => DXADULT_URI . '/assets/css/main.css',
-			'cssVersion' => DXADULT_VERSION,
-			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
+			'cssUrl'      => DXADULT_URI . '/assets/css/main.css',
+			'cssVersion'  => DXADULT_VERSION,
+			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+			'restUrl'     => esc_url_raw( rest_url( 'directoryx/v1/' ) ),
+			'nonce'       => wp_create_nonce( 'dxadult_nonce' ),
+			'searchNonce' => wp_create_nonce( 'dxadult_search_nonce' ),
+			'clickNonce'  => wp_create_nonce( 'dxadult_click_nonce' ),
 		)
 	);
 
@@ -196,6 +200,20 @@ add_action( 'widgets_init', 'dxadult_widgets_init' );
  * AJAX search handler.
  */
 function dxadult_ajax_search() {
+	// Verify nonce.
+	if ( ! isset( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'dxadult_search_nonce' ) ) {
+		wp_die( '<div class="search-no-results">' . esc_html__( 'Invalid request.', 'directoryx-adult' ) . '</div>' );
+	}
+
+	// Rate limiting: 10 requests per minute per IP.
+	$ip        = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$rate_key  = 'dxadult_search_' . md5( $ip );
+	$attempts  = (int) get_transient( $rate_key );
+	if ( $attempts > 10 ) {
+		wp_die( '<div class="search-no-results">' . esc_html__( 'Too many requests. Please slow down.', 'directoryx-adult' ) . '</div>' );
+	}
+	set_transient( $rate_key, $attempts + 1, MINUTE_IN_SECONDS );
+
 	$q = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
 	if ( strlen( $q ) < 2 ) {
 		wp_die( '<div class="search-no-results">' . esc_html__( 'Type at least 2 characters.', 'directoryx-adult' ) . '</div>' );
@@ -234,6 +252,129 @@ function dxadult_ajax_search() {
 }
 add_action( 'wp_ajax_dxadult_ajax_search', 'dxadult_ajax_search' );
 add_action( 'wp_ajax_nopriv_dxadult_ajax_search', 'dxadult_ajax_search' );
+
+/**
+ * Report listing handler.
+ */
+function dxadult_handle_report_listing() {
+	if ( ! isset( $_POST['dxadult_report_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dxadult_report_nonce'] ) ), 'dxadult_report' ) ) {
+		wp_die( esc_html__( 'Security check failed.', 'directoryx-adult' ), '', array( 'response' => 403 ) );
+	}
+	$listing_id = isset( $_POST['listing_id'] ) ? absint( $_POST['listing_id'] ) : 0;
+	$reason     = isset( $_POST['report_reason'] ) ? sanitize_key( wp_unslash( $_POST['report_reason'] ) ) : '';
+	$details    = isset( $_POST['report_details'] ) ? sanitize_textarea_field( wp_unslash( $_POST['report_details'] ) ) : '';
+
+	if ( ! $listing_id || ! $reason ) {
+		wp_die( esc_html__( 'Invalid submission.', 'directoryx-adult' ) );
+	}
+
+	$reasons = array( 'broken', 'inappropriate', 'spam', 'other' );
+	if ( ! in_array( $reason, $reasons, true ) ) {
+		wp_die( esc_html__( 'Invalid reason.', 'directoryx-adult' ) );
+	}
+
+	$reports   = get_post_meta( $listing_id, 'listing_reports', true );
+	$reports   = is_array( $reports ) ? $reports : array();
+	$reports[] = array(
+		'reason'  => $reason,
+		'details' => $details,
+		'time'    => time(),
+		'ip'      => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+	);
+	update_post_meta( $listing_id, 'listing_reports', $reports );
+
+	wp_safe_redirect( add_query_arg( 'reported', '1', get_permalink( $listing_id ) ) );
+	exit;
+}
+add_action( 'admin_post_dxadult_report_listing', 'dxadult_handle_report_listing' );
+add_action( 'admin_post_nopriv_dxadult_report_listing', 'dxadult_handle_report_listing' );
+
+/**
+ * Custom REST API endpoint for filtering listings.
+ */
+function dxadult_register_rest_routes() {
+	register_rest_route(
+		'directoryx/v1',
+		'/listings',
+		array(
+			'methods'             => 'GET',
+			'callback'            => 'dxadult_rest_listings',
+			'permission_callback' => '__return_true',
+			'args'                => array(
+				'category'   => array( 'sanitize_callback' => 'absint' ),
+				'status'     => array( 'sanitize_callback' => 'sanitize_key' ),
+				'min_rating' => array( 'sanitize_callback' => 'floatval' ),
+				'sort'       => array( 'sanitize_callback' => 'sanitize_key' ),
+				'per_page'   => array( 'sanitize_callback' => 'absint' ),
+			),
+		)
+	);
+}
+add_action( 'rest_api_init', 'dxadult_register_rest_routes' );
+
+function dxadult_rest_listings( WP_REST_Request $request ) {
+	$args = array(
+		'post_type'      => 'listing',
+		'posts_per_page' => min( 50, max( 1, (int) $request->get_param( 'per_page' ) ?: 12 ) ),
+		'no_found_rows'  => true,
+	);
+	$cat = (int) $request->get_param( 'category' );
+	if ( $cat ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => 'listing_category',
+				'field'    => 'term_id',
+				'terms'    => $cat,
+			),
+		);
+	}
+	$status = $request->get_param( 'status' );
+	$min    = (float) $request->get_param( 'min_rating' );
+	$sort   = $request->get_param( 'sort' );
+	$meta   = array();
+	if ( $status ) {
+		$meta[] = array( 'key' => 'listing_status', 'value' => $status );
+	}
+	if ( $min > 0 ) {
+		$meta[] = array( 'key' => 'listing_rating', 'value' => $min, 'compare' => '>=', 'type' => 'NUMERIC' );
+	}
+	if ( ! empty( $meta ) ) {
+		$args['meta_query'] = $meta;
+	}
+	switch ( $sort ) {
+		case 'rating':
+			$args['meta_key'] = 'listing_rating';
+			$args['orderby']  = 'meta_value_num';
+			$args['order']    = 'DESC';
+			break;
+		case 'popular':
+			$args['meta_key'] = 'listing_view_count';
+			$args['orderby']  = 'meta_value_num';
+			$args['order']    = 'DESC';
+			break;
+		case 'alpha':
+			$args['orderby'] = 'title';
+			$args['order']   = 'ASC';
+			break;
+	}
+	$query = new WP_Query( $args );
+	$items = array();
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		$items[] = array(
+			'id'        => get_the_ID(),
+			'title'     => get_the_title(),
+			'url'       => get_permalink(),
+			'excerpt'   => get_the_excerpt(),
+			'thumbnail' => has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium' ) : '',
+			'rating'    => (float) get_post_meta( get_the_ID(), 'listing_rating', true ),
+			'status'    => get_post_meta( get_the_ID(), 'listing_status', true ),
+			'featured'  => (bool) get_post_meta( get_the_ID(), 'listing_featured', true ),
+		);
+	}
+	wp_reset_postdata();
+	return rest_ensure_response( $items );
+}
 
 /**
  * Load modular includes.
