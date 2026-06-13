@@ -8,10 +8,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Screenshot images for theme preview
+- Static HTML preview generator for all 8 schemes × 2 themes
+- Category archive (`taxonomy-listing_category.php`) sync with the new list/grid toggle
+- Screenshot regeneration with the new list view
 - Admin dashboard widget for quick listing stats
 - Automated POT file generation via GitHub Actions
-- A/B testing framework for the 8 color schemes
+
+## [1.3.0] — 2026-06-13
+
+### Added
+
+#### 100 Default Adult Site Categories
+- **`inc/categories.php`** — New file shipping **100 top adult site categories** out of the box: Amateur, Anal, Anime, Asian, BBW, BDSM, Big Ass, Big Dick, Big Tits, Black, Blonde, Blowjob, Bondage, Brazilian, British, Brunette, Bukkake, Cam Girls, Cartoon, Casting, Celebrity, CFNM, Chubby, Clips, Compilation, Cosplay, Couples, Creampie, Cumshot, Cunnilingus, Deep Throat, Double Penetration, Ebony, European, Exotic, Facial, Fetish, Fingering, Fisting, Foot Fetish, Foursome, French, Gangbang, German, Group Sex, Gyno, Hairy, Handjob, Hardcore, Hentai, Homemade, Indian, Interracial, Japanese, Latina, Lesbian, Massage, Masturbation, Mature, MILF, Mom, Nudist, Old+Young, Orgy, Outdoor, Panties, Party, Pissing, Pornstar, POV, Pregnant, Public, Redhead, Russian, Schoolgirl, Sex Toys, Shower, Solo, Spanking, Squirt, Stockings, Strap-on, Strip, Swinger, Teen, Threesome, Toons, Toys, Twink, Uncensored, Uniform, Vintage, Virtual Reality, Webcam, Young, 3D, Amateur Wife, Arab, Ass, Babe, Orgasm, Romance, Voyeur, Twerking, Shemale.
+- **Auto-import on theme activation** — `after_switch_theme` hook imports any missing categories (idempotent: skips slugs that already exist).
+- **Admin notice** — After activation, a dismissible admin notice shows the count of categories imported and points to **Listings → Categories** to rename or remove any.
+- **SEO descriptions** — Each category ships with a one-line description for archive page meta and search results.
+- **Re-importable** — Call `dxadult_import_default_categories()` manually, or deactivate/reactivate the theme to re-trigger.
+
+#### List/Grid View Toggle for Archives
+- **List view (default)** — Archives now default to a true **link-list** layout: each listing is a row inside a single glass container with: 88×64 thumbnail | title + categories + status badge | star rating | "Visit" button. Row dividers separate entries; hover highlights the row with `var(--accent-soft)`.
+- **Grid view** — The original card grid is preserved as an alternate view.
+- **Toolbar toggle** — A segmented pill control in the archive toolbar lets visitors switch between List and Grid with SVG icons. `aria-pressed` and `aria-label` for a11y.
+- **URL parameter** — `?view=list` (default) or `?view=grid` controls the view server-side (so the right template part is loaded).
+- **localStorage persistence** — The chosen view persists across pages and sessions.
+- **New template part** — `template-parts/content-listing-row.php` for the row layout; the existing `template-parts/content-listing-card.php` is used for the grid view.
+- **Mobile-responsive** — Below 640px, the row stacks: thumb + title in the first row, then rating + Visit button indented under the title.
+
+#### Listing Meta Box UX
+- **"External link / URL" field description** — The Listing Details meta box now shows a description under the URL field explaining exactly where the link appears on the frontend: *"The full URL of the site you are listing. Shown as a 'Visit' button on the listing card and as a 'Visit Site' button on the single-listing page. Outbound clicks are tracked."*
+- **Relabeled field** — The field is now labeled "External link / URL:" (was "Listing URL:") for clearer intent.
+
+### Changed
+- **`archive.php`** — Added `?view=` parameter handling (defaults to `list`); wraps the loop in `<div class="listing-archive view--{list|grid}">` and picks the template part based on the view; added the view toggle HTML in the toolbar.
+- **`functions.php`** — `require_once` for the new `inc/categories.php`.
+- **`assets/css/critical.css`** — New section **30.5. Archive list view** with `.listing-archive.view--list`, `.listing-row` (4-column grid), `.listing-row__thumb/body/title/meta/rating/action`, mobile breakpoint, and `.archive-view-toggle` segmented pill control.
+- **`assets/js/main.js`** — View toggle handler: persists preference in `localStorage`, updates `aria-pressed`, reloads with `?view=list|grid` so the PHP template picks the right part.
+
+### Security
+- **`$_GET['view']` sanitization** — `sanitize_key()` + whitelist to `list`/`grid` in `archive.php`.
+- **All new template output escaped** — `esc_url`, `esc_attr`, `esc_html` throughout the new row template and view toggle HTML.
+
+---
 
 ## [1.2.0] — 2026-06-13
 
@@ -39,30 +76,6 @@ The biggest change in this release is the **per-scheme full-palette design syste
 - **Body `animation` consolidated** into a single `body { ... }` block (was two).
 - **`.entry-content a`** — Underline moved to hover/focus only (matches global `a` behaviour).
 - **`inc/customizer.php`** — Description for `dxadult_default_scheme` now explicitly states that each scheme changes the **entire theme** look, not just accent.
-
-### Design System Token Reference
-
-| Token | Purpose | Per-scheme? |
-|-------|---------|:-----------:|
-| `--bg-page` | Page background | ✅ |
-| `--bg-elevated` | Card / header / footer base | ✅ |
-| `--glass-bg` / `-strong` / `-subtle` | Glass card backgrounds | ✅ |
-| `--glass-border` / `-strong` | Glass card borders | ✅ |
-| `--text-primary` / `-secondary` / `-muted` / `-subtle` | Text colors | ✅ |
-| `--card-bg` / `-border` | Card surfaces | ✅ |
-| `--divider` / `-strong` | Divider lines | ✅ |
-| `--input-bg` / `-border` | Form inputs | ✅ |
-| `--highlight` / `-strong` | Top-edge "lit" gradient | ✅ |
-| `--accent` / `-hover` / `-active` | Accent palette | ✅ |
-| `--accent-glow` / `-glow-strong` / `-soft` | Accent glows | ✅ |
-| `--mesh-1` … `--mesh-4` | Page background gradient stops | ✅ |
-| `--success` / `--warning` / `--error` | Semantic | light-mode only |
-| `--font-sans` / `--font-display` / `--font-mono` | Typography | ❌ |
-| `--text-xs` … `--text-5xl` | Type scale | ❌ |
-| `--radius-sm` / `--radius` / `--radius-lg` / `--radius-xl` | Border radii | ❌ |
-| `--ease-smooth` / `--ease-spring` / `--ease-out` | Easing curves | ❌ |
-| `--duration-fast` / `--duration` / `--duration-slow` | Durations | ❌ |
-| `--glow-ring` / `--glow-text` | Utility shadows | derived |
 
 ---
 
@@ -209,7 +222,8 @@ When creating a new GitHub release, use this template:
 **Full Changelog**: https://github.com/j0vis/directoryx/compare/vPREVIOUS...vCURRENT
 ```
 
-[Unreleased]: https://github.com/j0vis/directoryx/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/j0vis/directoryx/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/j0vis/directoryx/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/j0vis/directoryx/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/j0vis/directoryx/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/j0vis/directoryx/releases/tag/v1.0.0

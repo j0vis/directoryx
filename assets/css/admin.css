@@ -1,0 +1,152 @@
+/* =========================================================================
+   Admin-only styles for the DirectoryX "External Link" meta box.
+   Loaded only on the listing edit screen (see dxadult_enqueue_admin).
+   ========================================================================= */
+
+/* ── Meta box accent stripe ─────────────────────────────────────────── */
+#dxadult_listing_link .hndle,
+#dxadult_listing_link .postbox-header {
+	background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%) !important;
+	color: #fff !important;
+	border-bottom: none !important;
+}
+#dxadult_listing_link .hndle span,
+#dxadult_listing_link .postbox-header h2,
+#dxadult_listing_link .handlediv,
+#dxadult_listing_link .handlediv .toggle-indicator {
+	color: #fff !important;
+}
+#dxadult_listing_link .handlediv .toggle-indicator::before {
+	color: #fff !important;
+}
+#dxadult_listing_link .inside {
+	padding: 12px 14px 14px;
+}
+
+/* ── Inner box layout ───────────────────────────────────────────────── */
+.dxadult-link-box {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.dxadult-link-box__label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 600;
+	font-size: 13px;
+	color: #1d2327;
+	margin: 0;
+}
+.dxadult-link-box__label .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+	color: #1f6feb;
+}
+.dxadult-link-box__required {
+	color: #d63638;
+	font-weight: 700;
+	margin-left: 2px;
+}
+.dxadult-link-box__input {
+	font-size: 14px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	padding: 8px 10px;
+	border: 2px solid #1f6feb;
+	border-radius: 6px;
+	box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.15);
+	transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.dxadult-link-box__input:focus {
+	border-color: #1f6feb;
+	box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.25);
+	outline: none;
+}
+
+/* ── Host display when URL is set ───────────────────────────────────── */
+.dxadult-link-box__host {
+	margin: 0;
+	padding: 8px 10px;
+	background: #f0f6fc;
+	border: 1px solid #c5d9ed;
+	border-radius: 4px;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: #1d2327;
+}
+.dxadult-link-box__host .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: #1f6feb;
+}
+.dxadult-link-box__host code {
+	background: transparent;
+	padding: 0;
+	font-size: 12px;
+	color: #0969da;
+	font-weight: 600;
+}
+
+/* ── Empty state warning ───────────────────────────────────────────── */
+.dxadult-link-box__empty {
+	margin: 0;
+	padding: 8px 10px;
+	background: #fcf9e8;
+	border: 1px solid #f0e4a4;
+	border-left: 3px solid #dba617;
+	border-radius: 4px;
+	font-size: 12px;
+	color: #50575e;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.dxadult-link-box__empty .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: #dba617;
+}
+
+/* ── Test link button ──────────────────────────────────────────────── */
+.dxadult-link-box__test {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	justify-content: center;
+	background: #1f6feb;
+	color: #fff;
+	border: 1px solid #1f6feb;
+	font-weight: 500;
+	transition: background 0.15s ease, transform 0.1s ease;
+}
+.dxadult-link-box__test:hover,
+.dxadult-link-box__test:focus-visible {
+	background: #1856b8;
+	border-color: #1856b8;
+	color: #fff;
+	transform: translateY(-1px);
+}
+.dxadult-link-box__test .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 1;
+}
+
+/* ── Help text ─────────────────────────────────────────────────────── */
+.dxadult-link-box__help {
+	font-size: 12px;
+	color: #50575e;
+	margin: 4px 0 0;
+	line-height: 1.5;
+}
+
+/* ── Mobile / narrow screens ───────────────────────────────────────── */
+@media screen and (max-width: 782px) {
+	.dxadult-link-box__input { font-size: 16px; } /* prevent iOS zoom on focus */
+}

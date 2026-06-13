@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-scheme="midnight">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DirectoryX Adult — Design Preview</title>
+	<link rel="stylesheet" href="../assets/css/critical.css">
+	<style>
+		/* ── Preview-only chrome (fixed control bar) ── */
+		.preview-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 9999;
+			display: flex;
+			gap: 16px;
+			align-items: center;
+			padding: 10px 20px;
+			background: rgba(8, 9, 12, 0.92);
+			-webkit-backdrop-filter: blur(12px);
+			backdrop-filter: blur(12px);
+			color: #e6edf7;
+			font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+			font-size: 13px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+		}
+		.preview-bar label {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			font-weight: 500;
+		}
+		.preview-bar select {
+			background: #1c2128;
+			color: #e6edf7;
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			border-radius: 6px;
+			padding: 5px 10px;
+			font-family: inherit;
+			font-size: 13px;
+			cursor: pointer;
+		}
+		.preview-bar select:focus {
+			outline: 2px solid #58a6ff;
+			outline-offset: 1px;
+		}
+		.preview-bar button {
+			background: #1f6feb;
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			padding: 5px 12px;
+			font-family: inherit;
+			font-size: 13px;
+			font-weight: 500;
+			cursor: pointer;
+			transition: background 0.15s;
+		}
+		.preview-bar button:hover { background: #388bfd; }
+		.preview-bar .spacer { flex: 1; }
+		.preview-bar .brand { color: #8b949e; font-weight: 600; letter-spacing: 0.02em; }
+		.preview-bar .brand b { color: #58a6ff; }
+
+		/* Push content below the fixed bar */
+		.preview-stage { padding-top: 52px; }
+
+		/* Screenshot mode — hide the bar, full-bleed */
+		body.screenshot-mode .preview-bar { display: none; }
+		body.screenshot-mode .preview-stage { padding-top: 0; }
+		body.screenshot-mode { overflow-x: hidden; }
+
+		/* Sample thumbnail (gradient placeholder) */
+		.listing-row__thumb img,
+		.listing-card__thumbnail img,
+		.category-card__icon-img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	</style>
+</head>
+<body>
+	<!-- ── Preview control bar (hidden in screenshot mode) ── -->
+	<div class="preview-bar" role="toolbar" aria-label="Design preview controls">
+		<label>
+			<span>Scheme:</span>
+			<select id="scheme-select" aria-label="Color scheme">
+				<option value="midnight">Midnight Blue</option>
+				<option value="emerald">Emerald Green</option>
+				<option value="ruby">Ruby Red</option>
+				<option value="amethyst">Amethyst Purple</option>
+				<option value="amber">Amber Gold</option>
+				<option value="coral">Coral Orange</option>
+				<option value="ocean">Ocean Teal</option>
+				<option value="slate">Slate Indigo</option>
+			</select>
+		</label>
+		<label>
+			<span>Theme:</span>
+			<select id="theme-select" aria-label="Light or dark">
+				<option value="dark">Dark</option>
+				<option value="light">Light</option>
+			</select>
+		</label>
+		<button type="button" id="screenshot-btn" aria-label="Toggle screenshot mode">Screenshot Mode</button>
+		<span class="spacer"></span>
+		<span class="brand">DirectoryX <b>Adult</b> — Design Preview</span>
+	</div>
+
+	<!-- ── Stage: everything below is real theme output ── -->
+	<div class="preview-stage">
+
+		<!-- ═══ Header ═══ -->
+		<header class="site-header">
+			<div class="header-inner">
+				<div class="header-left">
+					<h1 class="site-title"><a href="#">DirectoryX</a></h1>
+				</div>
+				<div class="header-center">
+					<form class="search-form" onsubmit="event.preventDefault()">
+						<input type="search" placeholder="Search 100+ sites..." aria-label="Search">
+						<button type="submit" aria-label="Search">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+						</button>
+					</form>
+				</div>
+				<div class="header-right">
+					<button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme" aria-pressed="false">
+						<span class="theme-toggle-icon">
+							<svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+							<svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+						</span>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<main class="site-main" role="main">
+
+			<!-- ═══ Page header ═══ -->
+			<header class="page-header">
+				<h1 class="page-title">Top Adult Sites</h1>
+				<p class="archive-description">Discover the best adult sites curated by our editors. Browse 100+ categories with ratings, reviews, and one-click visit links.</p>
+			</header>
+
+			<!-- ═══ Archive toolbar with view toggle ═══ -->
+			<div class="archive-toolbar">
+				<div class="archive-view-toggle" role="group" aria-label="Archive view">
+					<button type="button" class="archive-view-toggle__btn is-active" data-view="list" aria-pressed="true" aria-label="List view">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1.5"/><circle cx="4" cy="12" r="1.5"/><circle cx="4" cy="18" r="1.5"/></svg>
+						<span>List</span>
+					</button>
+					<button type="button" class="archive-view-toggle__btn" data-view="grid" aria-pressed="false" aria-label="Grid view">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+						<span>Grid</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- ═══ Featured section ═══ -->
+			<section class="section">
+				<h2 class="section-title">Featured</h2>
+				<div class="listing-grid">
+					<article class="listing-card is-featured">
+						<div class="listing-card__thumbnail">
+							<img src="https://picsum.photos/seed/site1/400/300" alt="" loading="lazy">
+						</div>
+						<div class="listing-card__body">
+							<div class="listing-card__meta">
+								<span class="listing-featured-badge">Featured</span>
+								<span class="listing-status listing-status--reviewed">Reviewed</span>
+							</div>
+							<h3 class="listing-card__title"><a href="#">PremiumHub</a></h3>
+							<div class="listing-card__categories"><a href="#">MILF</a>, <a href="#">Anal</a>, <a href="#">HD</a></div>
+							<div class="listing-card__excerpt"><p>Top-rated premium content with 4K streams and a massive library updated daily.</p></div>
+							<a href="#" class="button button--visit button--small">Visit</a>
+						</div>
+					</article>
+					<article class="listing-card is-featured">
+						<div class="listing-card__thumbnail">
+							<img src="https://picsum.photos/seed/site2/400/300" alt="" loading="lazy">
+						</div>
+						<div class="listing-card__body">
+							<div class="listing-card__meta">
+								<span class="listing-featured-badge">Featured</span>
+								<span class="listing-status listing-status--active">Active</span>
+							</div>
+							<h3 class="listing-card__title"><a href="#">StreamVault</a></h3>
+							<div class="listing-card__categories"><a href="#">Teen</a>, <a href="#">VR</a></div>
+							<div class="listing-card__excerpt"><p>Cutting-edge VR experience with thousands of immersive scenes.</p></div>
+							<a href="#" class="button button--visit button--small">Visit</a>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<!-- ═══ List view (default) ═══ -->
+			<div class="listing-archive view--list" itemscope itemtype="https://schema.org/ItemList">
+				<article class="listing-row">
+					<a class="listing-row__thumb" href="#" tabindex="-1" aria-hidden="true">
+						<img src="https://picsum.photos/seed/r1/176/128" alt="" loading="lazy">
+					</a>
+					<div class="listing-row__body">
+						<h3 class="listing-row__title"><a href="#"><span>AmateurWife</span></a></h3>
+						<div class="listing-row__meta">
+							<span class="listing-status listing-status--active">Active</span>
+							<span class="listing-row__cats"><a href="#">Amateur</a>, <a href="#">Wife</a>, <a href="#">Homemade</a></span>
+						</div>
+					</div>
+					<div class="listing-row__rating">
+						<span class="star--full">★</span> 4.8
+					</div>
+					<div class="listing-row__action">
+						<a href="#" class="button button--small button--visit">Visit</a>
+					</div>
+				</article>
+				<article class="listing-row">
+					<a class="listing-row__thumb" href="#" tabindex="-1" aria-hidden="true">
+						<img src="https://picsum.photos/seed/r2/176/128" alt="" loading="lazy">
+					</a>
+					<div class="listing-row__body">
+						<h3 class="listing-row__title"><a href="#"><span>BDSM Dungeon</span></a></h3>
+						<div class="listing-row__meta">
+							<span class="listing-status listing-status--reviewed">Reviewed</span>
+							<span class="listing-row__cats"><a href="#">BDSM</a>, <a href="#">Fetish</a>, <a href="#">Bondage</a></span>
+						</div>
+					</div>
+					<div class="listing-row__rating">
+						<span class="star--full">★</span> 4.6
+					</div>
+					<div class="listing-row__action">
+						<a href="#" class="button button--small button--visit">Visit</a>
+					</div>
+				</article>
+				<article class="listing-row">
+					<a class="listing-row__thumb" href="#" tabindex="-1" aria-hidden="true">
+						<img src="https://picsum.photos/seed/r3/176/128" alt="" loading="lazy">
+					</a>
+					<div class="listing-row__body">
+						<h3 class="listing-row__title"><a href="#"><span>Asian Cuties</span></a></h3>
+						<div class="listing-row__meta">
+							<span class="listing-status listing-status--new">New</span>
+							<span class="listing-row__cats"><a href="#">Asian</a>, <a href="#">Japanese</a>, <a href="#">Hentai</a></span>
+						</div>
+					</div>
+					<div class="listing-row__rating">
+						<span class="star--full">★</span> 4.4
+					</div>
+					<div class="listing-row__action">
+						<a href="#" class="button button--small button--visit">Visit</a>
+					</div>
+				</article>
+				<article class="listing-row">
+					<a class="listing-row__thumb" href="#" tabindex="-1" aria-hidden="true">
+						<img src="https://picsum.photos/seed/r4/176/128" alt="" loading="lazy">
+					</a>
+					<div class="listing-row__body">
+						<h3 class="listing-row__title"><a href="#"><span>Lesbian Lounge</span></a></h3>
+						<div class="listing-row__meta">
+							<span class="listing-status listing-status--active">Active</span>
+							<span class="listing-row__cats"><a href="#">Lesbian</a>, <a href="#">Toys</a></span>
+						</div>
+					</div>
+					<div class="listing-row__rating">
+						<span class="star--full">★</span> 4.7
+					</div>
+					<div class="listing-row__action">
+						<a href="#" class="button button--small button--visit">Visit</a>
+					</div>
+				</article>
+				<article class="listing-row">
+					<a class="listing-row__thumb listing-row__thumb--empty" href="#" tabindex="-1" aria-hidden="true"></a>
+					<div class="listing-row__body">
+						<h3 class="listing-row__title"><a href="#"><span>Threesome Hub</span></a></h3>
+						<div class="listing-row__meta">
+							<span class="listing-status listing-status--active">Active</span>
+							<span class="listing-row__cats"><a href="#">Threesome</a>, <a href="#">Group Sex</a></span>
+						</div>
+					</div>
+					<div class="listing-row__rating">
+						<span class="star--full">★</span> 4.5
+					</div>
+					<div class="listing-row__action">
+						<a href="#" class="button button--small button--visit">Visit</a>
+					</div>
+				</article>
+			</div>
+
+			<!-- ═══ Category grid ═══ -->
+			<section class="section">
+				<h2 class="section-title">Popular Categories</h2>
+				<div class="category-grid">
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+						</div>
+						<div class="category-name">MILF</div>
+						<div class="category-count">142 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+						</div>
+						<div class="category-name">Lesbian</div>
+						<div class="category-count">98 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>
+						</div>
+						<div class="category-name">Anal</div>
+						<div class="category-count">187 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+						</div>
+						<div class="category-name">BDSM</div>
+						<div class="category-count">76 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+						</div>
+						<div class="category-name">Hentai</div>
+						<div class="category-count">54 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+						</div>
+						<div class="category-name">VR</div>
+						<div class="category-count">38 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+						</div>
+						<div class="category-name">Live Cams</div>
+						<div class="category-count">112 sites</div>
+					</a>
+					<a class="category-card" href="#">
+						<div class="category-card__icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+						</div>
+						<div class="category-name">Teen</div>
+						<div class="category-count">89 sites</div>
+					</a>
+				</div>
+			</section>
+
+		</main>
+
+		<!-- ═══ Footer ═══ -->
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<nav class="footer-navigation" aria-label="Footer">
+					<ul>
+						<li><a href="#">Home</a></li>
+						<li><a href="#">Categories</a></li>
+						<li><a href="#">Top Rated</a></li>
+						<li><a href="#">Most Popular</a></li>
+						<li><a href="#">Contact</a></li>
+					</ul>
+				</nav>
+				<div class="site-info">© 2026 DirectoryX — 100 categories · per-scheme full-palette design · 100/100/100 PageSpeed</div>
+			</div>
+		</footer>
+	</div>
+
+	<script>
+		(function () {
+			'use strict';
+
+			var schemeSelect = document.getElementById('scheme-select');
+			var themeSelect = document.getElementById('theme-select');
+			var screenshotBtn = document.getElementById('screenshot-btn');
+			var themeToggle = document.getElementById('theme-toggle');
+			var root = document.documentElement;
+
+			function applyScheme(scheme) {
+				root.setAttribute('data-scheme', scheme);
+				document.querySelectorAll('.scheme-pill, [data-scheme-pill]').forEach(function (p) {
+					p.classList.toggle('is-active', p.getAttribute('data-scheme') === scheme);
+				});
+			}
+
+			function applyTheme(theme) {
+				root.setAttribute('data-theme', theme);
+				if (themeToggle) themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+			}
+
+			schemeSelect.addEventListener('change', function () {
+				applyScheme(this.value);
+			});
+
+			themeSelect.addEventListener('change', function () {
+				applyTheme(this.value);
+			});
+
+			// Theme toggle button
+			if (themeToggle) {
+				themeToggle.addEventListener('click', function () {
+					var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+					applyTheme(next);
+					themeSelect.value = next;
+				});
+			}
+
+			// Screenshot mode toggle
+			screenshotBtn.addEventListener('click', function () {
+				document.body.classList.toggle('screenshot-mode');
+				var on = document.body.classList.contains('screenshot-mode');
+				screenshotBtn.textContent = on ? 'Show Controls' : 'Screenshot Mode';
+				screenshotBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+			});
+
+			// Archive view toggle (List/Grid) — client-side only, swaps the wrapper class
+			var viewBtns = document.querySelectorAll('.archive-view-toggle__btn');
+			viewBtns.forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					var view = btn.getAttribute('data-view');
+					viewBtns.forEach(function (b) {
+						var on = b === btn;
+						b.classList.toggle('is-active', on);
+						b.setAttribute('aria-pressed', on ? 'true' : 'false');
+					});
+					document.querySelectorAll('.listing-archive').forEach(function (wrap) {
+						wrap.classList.remove('view--list', 'view--grid');
+						wrap.classList.add('view--' + view);
+					});
+				});
+			});
+
+			// Apply URL params if present (?scheme=midnight&theme=dark)
+			var params = new URLSearchParams(window.location.search);
+			if (params.get('scheme') && document.querySelector('#scheme-select option[value="' + params.get('scheme') + '"]')) {
+				applyScheme(params.get('scheme'));
+				schemeSelect.value = params.get('scheme');
+			}
+			if (params.get('theme') && document.querySelector('#theme-select option[value="' + params.get('theme') + '"]')) {
+				applyTheme(params.get('theme'));
+				themeSelect.value = params.get('theme');
+			}
+		})();
+	</script>
+</body>
+</html>

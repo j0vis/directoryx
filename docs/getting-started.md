@@ -13,18 +13,28 @@
 1. Upload the `directoryx-adult` folder to `/wp-content/themes/`
 2. Go to **Appearance > Themes** and activate it
 
-### 2. Configure Your Directory
+### 2. First-Time Activation
+
+When you activate the theme for the first time, **100 default adult site categories are auto-imported** into the `listing_category` taxonomy with SEO descriptions. A dismissible admin notice confirms the import count and points you to **Listings → Categories** to rename, reorder, or remove any terms.
+
+> The import is **idempotent** — re-activating the theme is safe and won't create duplicates (slugs are checked first).
+
+To re-trigger the import manually:
+- **Deactivate** and **reactivate** the theme under **Appearance → Themes**, or
+- Call `dxadult_import_default_categories()` from `wp-admin` or WP-CLI
+
+### 3. Configure Your Directory
 
 **Create Categories:**
-1. Go to **Listings > Categories**
-2. Add categories like "Free Sites", "Premium", "Videos", etc.
-3. Add descriptions and featured images for category cards
+- 100 defaults are already in place — manage them under **Listings > Categories**
+- Add new ones, edit descriptions, or remove unwanted terms
+- Add featured images for category cards (optional)
 
 **Add Listings:**
 1. Go to **Listings > Add New**
 2. Fill in the title and description
-3. Set the **Listing Details** meta box:
-   - **URL:** The external site link
+3. In the **Listing Details** meta box:
+   - **External link / URL:** The full URL of the site (shown as a "Visit" button on cards and "Visit Site" on single-listing pages; outbound clicks are tracked)
    - **Rating:** 1.0 to 5.0 stars
    - **Status:** Active, Reviewed, or New
    - **Featured:** Tick to pin to the top of archives with a gold badge
@@ -32,7 +42,7 @@
 5. Add a featured image (recommended: 800x600)
 6. Publish
 
-### 3. Set Up Page Templates
+### 4. Set Up Page Templates
 
 **Directory Home Page:**
 1. Create a new page (e.g., "Home")
@@ -54,7 +64,7 @@
 1. Create any page
 2. Set the template to **Full Width** for content without sidebar
 
-### 4. Customize the Theme
+### 5. Customize the Theme
 
 Go to **Appearance > Customize** to configure:
 
@@ -66,7 +76,23 @@ Go to **Appearance > Customize** to configure:
 
 > **Important:** Each color scheme rewires the **entire theme** — page background, surface elevations, glass tints, text tints, and the mesh gradient all change. The same component looks completely different in Midnight (deep navy with blue mesh) vs Ruby (deep wine with red mesh) vs Amber (warm brown with gold mesh). The selected scheme is applied via the `data-scheme` attribute on `<html>` server-side.
 
-### 5. Color Schemes (Webmaster Only)
+### 6. Archive View Toggle (List / Grid)
+
+All listing archives (e.g., `/listings/`) include a **view toggle** in the toolbar — a segmented pill control with two buttons:
+
+| Icon | Label | View | URL |
+|------|-------|------|-----|
+| ☰ | List | True link-list feel — one row per site with thumbnail, title, categories, status, rating, and Visit button | `?view=list` (default) |
+| ⬛ | Grid | Original card grid layout | `?view=grid` |
+
+**How it works:**
+- Click either button to switch views instantly
+- The selected view is **persisted in `localStorage`** so it survives page navigation and browser sessions
+- The URL is also updated to `?view=list` or `?view=grid` so the choice is shareable
+- The toggle is fully accessible: `role="group"`, `aria-label`, and `aria-pressed` on each button
+- On mobile (<640px), the list view stacks the rating and Visit button under the title for a clean 2-row layout
+
+### 7. Color Schemes (Webmaster Only)
 
 The 8 color schemes are configurable in **Appearance > Customize > Colors > Accent Color Scheme (site-wide)**:
 
@@ -81,9 +107,15 @@ The 8 color schemes are configurable in **Appearance > Customize > Colors > Acce
 | **Ocean Teal** | Refreshing, deep sea | `#39d0d8` | `#0d7d7d` |
 | **Slate Indigo** | Refined, sophisticated | `#a5b4fc` | `#6366f1` |
 
-All accents are WCAG AA compliant against their respective dark/light backgrounds. The theme remembers the light/dark mode preference in `localStorage`; the color scheme is server-rendered from the Customizer default.
+All accents are WCAG AA compliant against their respective dark/light backgrounds.
 
-### 6. Mobile Navigation
+### 8. 100 Default Categories (Reference)
+
+The full list of categories auto-imported on activation:
+
+Amateur • Anal • Anime • Asian • BBW • BDSM • Big Ass • Big Dick • Big Tits • Black • Blonde • Blowjob • Bondage • Brazilian • British • Brunette • Bukkake • Cam Girls • Cartoon • Casting • Celebrity • CFNM • Chubby • Clips • Compilation • Cosplay • Couples • Creampie • Cumshot • Cunnilingus • Deep Throat • Double Penetration • Ebony • European • Exotic • Facial • Fetish • Fingering • Fisting • Foot Fetish • Foursome • French • Gangbang • German • Group Sex • Gyno • Hairy • Handjob • Hardcore • Hentai • Homemade • Indian • Interracial • Japanese • Latina • Lesbian • Massage • Masturbation • Mature • MILF • Mom • Nudist • Old + Young • Orgy • Outdoor • Panties • Party • Pissing • Pornstar • POV • Pregnant • Public • Redhead • Russian • Schoolgirl • Sex Toys • Shower • Solo • Spanking • Squirt • Stockings • Strap-on • Strip • Swinger • Teen • Threesome • Toons • Toys • Twink • Uncensored • Uniform • Vintage • Virtual Reality • Webcam • Young • 3D • Amateur Wife • Arab • Ass • Babe • Orgasm • Romance • Voyeur • Twerking • Shemale
+
+### 9. Mobile Navigation
 
 On mobile devices (under 768px), a fixed bottom navigation bar appears with:
 - **Home** — Link to front page
@@ -112,6 +144,21 @@ The theme includes Schema.org structured data:
 Install **Yoast SEO** or **Rank Math** for enhanced SEO features.
 
 ## Troubleshooting
+
+**Categories didn't import on activation:**
+- Check that the user has `manage_categories` capability
+- The import is idempotent — existing slugs are skipped, so re-activate is safe
+- Call `dxadult_import_default_categories()` manually from `wp-admin` or WP-CLI
+
+**List/Grid toggle not appearing:**
+- The toggle is only rendered on listing archives (`is_post_type_archive( 'listing' )` or `is_tax( 'listing_category' )`)
+- Confirm the toolbar is visible — it should appear above the page title
+- Check that `assets/js/main.js` is loaded and not blocked by a caching plugin
+
+**View choice not persisting:**
+- The toggle uses `localStorage`; ensure cookies/localStorage are enabled
+- Browser private/incognito mode resets the preference on session close
+- The `?view=` URL param always wins, so bookmarking `?view=grid` always shows grid
 
 **Color scheme not changing the look as expected:**
 - The scheme is set server-side in the Customizer; visitors cannot override it
@@ -144,9 +191,9 @@ The theme uses a **per-scheme full-palette design system** (v1.2.0+). Each of th
 - **Accent** (`--accent`, `--accent-hover`, `--accent-active`, `--accent-glow`, `--accent-glow-strong`, `--accent-soft`)
 - **Mesh** (`--mesh-1`, `--mesh-2`, `--mesh-3`, `--mesh-4` — 4 radial gradient stops for the page background)
 
-Visual treatments include an **animated mesh background** (24s drift, reduced-motion aware), **3-stop gradient text** on titles (`text-primary` → `accent` → `accent-hover`), a **glowing scrollbar**, and **bolder hovers** (cards lift, emit a 40px accent glow, and get a 1px accent border).
+Visual treatments include an **animated mesh background** (24s drift, reduced-motion aware), **3-stop gradient text** on titles (`text-primary` → `accent` → `accent-hover`), a **glowing scrollbar**, and **bolder hovers** (cards lift, emit a 40–48px accent glow, and get a 1px accent border).
 
-For the full token reference, see `CHANGELOG.md` (v1.2.0 entry) and the comments at the top of `assets/css/critical.css`.
+For the full token reference, see `CHANGELOG.md` (v1.2.0 and v1.3.0 entries) and the comments at the top of `assets/css/critical.css`.
 
 ## Support
 

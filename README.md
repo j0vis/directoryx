@@ -1,11 +1,11 @@
 # DirectoryX Adult
 
-A high-performance adult site directory WordPress theme built on DirectoryX. **Per-scheme full-palette design system** — each of the 8 accent schemes rewires the entire theme (background, surfaces, glass tints, text tints, mesh gradient), not just the accent color. Optimized for 100/100/100 PageSpeed.
+A high-performance adult site directory WordPress theme built on DirectoryX. **Per-scheme full-palette design system** — each of the 8 accent schemes rewires the entire theme (background, surfaces, glass tints, text tints, mesh gradient), not just the accent color. Ships with **100 default adult site categories** and a **list/grid view toggle** for archives. Optimized for 100/100/100 PageSpeed.
 
 ![WordPress Version](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)
 ![PHP Version](https://img.shields.io/badge/PHP-8.0%2B-purple.svg)
 ![License](https://img.shields.io/badge/License-GPL%20v2-green.svg)
-![Version](https://img.shields.io/badge/Version-1.2.0-orange.svg)
+![Version](https://img.shields.io/badge/Version-1.3.0-orange.svg)
 
 ## Features
 
@@ -22,6 +22,7 @@ A high-performance adult site directory WordPress theme built on DirectoryX. **P
 - **Scroll Progress Bar & Back-to-Top** — Floating UI helpers with reduced-motion support.
 
 ### Content & Listings
+- **100 Default Adult Categories** — Ships with **100 top adult site categories** (Amateur, Anal, MILF, BDSM, etc.) that auto-import on theme activation with SEO descriptions. Rename or remove any under **Listings → Categories**.
 - **Custom Listing Post Type** — With URL, rating, status, **featured flag**, **view counter**, and **click counter** meta fields
 - **Admin Columns & Quick Edit** — Sortable Featured, Rating, Status, URL, Views, Clicks columns; inline-edit rating/status/featured
 - **Category Taxonomy** — `listing_category` with archive templates
@@ -33,6 +34,7 @@ A high-performance adult site directory WordPress theme built on DirectoryX. **P
 - **Social Share** — X (Twitter) share + copy-link button
 
 ### Discovery & Filtering
+- **List/Grid View Toggle** — Archives now default to a true **list/row layout** (link-list feel) with a segmented pill toggle in the toolbar. Switch to the original card grid anytime. View persists in `localStorage`.
 - **Archive Filter Bar** — Sort, category, status, and min-rating selectors on `archive.php`
 - **Sort Options** — Newest, Top Rated, Most Popular (by views), A–Z
 - **AJAX Search** — Live dropdown with debounced input, keyboard navigation (↑/↓/Enter/Esc)
@@ -81,8 +83,9 @@ The screenshot shows the DirectoryX Adult theme's glassmorphic design with the d
 1. Upload the theme folder to `/wp-content/themes/`
 2. Activate the theme through **Appearance > Themes** in WordPress
 3. Go to **Appearance > Customize** to set the default color scheme (the **only** place visitors can't override; they can only toggle light/dark via the theme toggle in the header)
-4. Create "listing" posts and assign them to "listing_category" terms
-5. (Optional) Create pages using the **Top Rated** or **Most Popular** templates for curated discovery
+4. On activation, **100 default adult categories are auto-imported** — see the admin notice for the count. Rename or remove any under **Listings → Categories**
+5. Create "listing" posts and assign them to "listing_category" terms
+6. (Optional) Create pages using the **Top Rated** or **Most Popular** templates for curated discovery
 
 ## PageSpeed Optimization
 
@@ -102,13 +105,13 @@ This theme achieves 100/100/100 out of the box by:
 The theme registers these automatically on activation:
 
 - **Post Type:** `listing` (slug: `listing`)
-- **Taxonomy:** `listing_category` (slug: `category`)
+- **Taxonomy:** `listing_category` (slug: `category`) — ships with 100 default terms
 
 ### Custom Meta Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `listing_url` | URL | External site URL (used for "Visit Site" button and click tracking) |
+| `listing_url` | URL | External site URL (shown as "Visit" button on cards and "Visit Site" button on single-listing pages; outbound clicks are tracked) |
 | `listing_rating` | Number | 1.0 to 5.0 star rating |
 | `listing_status` | String | `active`, `reviewed`, or `new` |
 | `listing_featured` | Boolean | When `1`, listing is pinned to archive tops with a gold "Featured" badge |
@@ -125,6 +128,18 @@ The theme registers these automatically on activation:
 | Top Rated | `template-top-rated.php` | Listings sorted by `listing_rating` (DESC) |
 | Most Popular | `template-most-popular.php` | Listings sorted by `listing_view_count` (DESC) |
 | Full Width | `template-full-width.php` | Edge-to-edge layout for landing pages |
+
+## Archive View Toggle
+
+Archives (`/listings/`) ship with a **List/Grid view toggle** in the toolbar. **List is the default** — it gives a true link-list feel with one row per site (88×64 thumbnail | title + categories + status | star rating | "Visit" button). Switch to **Grid** for the original card grid layout. The chosen view persists in `localStorage` and is reflected in the URL as `?view=list` or `?view=grid`.
+
+## 100 Default Categories
+
+On theme activation, **100 top adult site categories** are auto-imported with SEO descriptions:
+
+Amateur • Anal • Anime • Asian • BBW • BDSM • Big Ass • Big Dick • Big Tits • Black • Blonde • Blowjob • Bondage • Brazilian • British • Brunette • Bukkake • Cam Girls • Cartoon • Casting • Celebrity • CFNM • Chubby • Clips • Compilation • Cosplay • Couples • Creampie • Cumshot • Cunnilingus • Deep Throat • Double Penetration • Ebony • European • Exotic • Facial • Fetish • Fingering • Fisting • Foot Fetish • Foursome • French • Gangbang • German • Group Sex • Gyno • Hairy • Handjob • Hardcore • Hentai • Homemade • Indian • Interracial • Japanese • Latina • Lesbian • Massage • Masturbation • Mature • MILF • Mom • Nudist • Old + Young • Orgy • Outdoor • Panties • Party • Pissing • Pornstar • POV • Pregnant • Public • Redhead • Russian • Schoolgirl • Sex Toys • Shower • Solo • Spanking • Squirt • Stockings • Strap-on • Strip • Swinger • Teen • Threesome • Toons • Toys • Twink • Uncensored • Uniform • Vintage • Virtual Reality • Webcam • Young • 3D • Amateur Wife • Arab • Ass • Babe • Orgasm • Romance • Voyeur • Twerking • Shemale
+
+Rename or remove any under **Listings → Categories**. The import is **idempotent** (skips existing slugs), so re-activating the theme is safe.
 
 ## REST API
 
@@ -191,10 +206,11 @@ All accent colors are WCAG AA compliant against their respective dark/light back
 ### Visual Treatment
 
 - **Animated mesh** — 4 radial gradient stops drift via `background-position` over 24s. Each scheme tints the mesh with its own color at 0.32+ opacity (visible, not subtle).
-- **Gradient text** — `h1`, `.site-title`, `.page-title`, `.entry-title` use a 3-stop gradient (`text-primary` → `accent` → `accent-hover`) via `background-clip: text` + `-webkit-text-fill-color: transparent`.
+- **Gradient text** — `h1`, `.site-title`, `.page-title`, `.entry-title` use a 3-stop gradient (`text-primary` → `accent` → `accent-hover`) via `background-clip: text`.
 - **Glowing scrollbar** (Webkit) — Thumb picks up the active scheme's accent on hover.
-- **Bolder hovers** — `.listing-card:hover` lifts `-8px` and emits a 40px accent glow + 1px accent border via `mask-composite`.
+- **Bolder hovers** — `.listing-card:hover` lifts `-10px` and emits a 48px accent glow + 1px accent border via `mask-composite`.
 - **Bolder focus rings** — 2px outline + 3px accent glow.
+- **No link underlines** — Links are differentiated by color shift only. Content links get a GitHub-style pill background on hover.
 
 ## File Structure
 
@@ -212,10 +228,12 @@ directoryx-adult/
 │   ├── template-functions.php   # Meta registration, admin columns, quick edit, view tracker
 │   ├── template-tags.php    # Related listings, social share, report form, schema
 │   ├── customizer.php
-│   └── post-types.php
+│   ├── post-types.php
+│   └── categories.php       # 100 default adult categories + import function
 ├── template-parts/          # Reusable template partials
 │   ├── content.php
-│   ├── content-listing-card.php
+│   ├── content-listing-card.php   # Card layout (grid view)
+│   ├── content-listing-row.php    # Row layout (list view, default)
 │   ├── content-category-card.php
 │   ├── content-none.php
 │   ├── content-page.php
@@ -234,7 +252,7 @@ directoryx-adult/
 │   │   ├── editor-style.css
 │   │   └── print.css
 │   └── js/
-│       └── main.js          # Deferred JS (search, lightbox, IO, focus trap, prefetch…)
+│       └── main.js          # Deferred JS (search, lightbox, IO, focus trap, prefetch, view toggle…)
 └── AGENTS.md                # AI agent documentation
 ```
 
@@ -246,104 +264,52 @@ directoryx-adult/
 - PHP 8.0+
 - Node.js (optional, for CSS minification)
 
-### SVG Icons
+### Re-importing the 100 Default Categories
 
-The theme includes 30+ inline SVG icons via `inc/svg-icons.php`. Use them in templates:
+The categories are imported automatically on theme activation (skips existing slugs). To re-trigger:
 
-```php
-<?php dxadult_icon( 'external-link', '14' ); ?>
-<?php echo dxadult_get_icon( 'folder', '18', 'my-class' ); ?>
-```
-
-All icons use `currentColor` for stroke/fill, so they inherit the theme's accent color automatically.
+1. **Deactivate and reactivate** the theme under **Appearance → Themes**, or
+2. **Call the function manually** from `wp-admin` or WP-CLI:
+   ```php
+   dxadult_import_default_categories();
+   ```
 
 ### Adding a Color Scheme
 
 Each scheme is a full palette, so adding one is more involved than just defining an accent. Required steps:
 
-1. **Add the dark full-palette block** in `assets/css/critical.css`:
-   ```css
-   [data-scheme="myscheme"] {
-       --bg-page: #…;
-       --bg-elevated: #…;
-       --glass-bg: rgba(…, 0.5);
-       --glass-bg-strong: rgba(…, 0.74);
-       --glass-bg-subtle: rgba(…, 0.32);
-       --glass-border: rgba(…, 0.14);
-       --glass-border-strong: rgba(…, 0.22);
-       --text-primary: #…;
-       --text-secondary: #…;
-       --text-muted: #…;
-       --text-subtle: #…;
-       --card-bg: rgba(…, 0.5);
-       --card-bg-strong: rgba(…, 0.75);
-       --card-border: rgba(…, 0.12);
-       --card-border-hover: rgba(…, 0.24);
-       --divider: rgba(…, 0.12);
-       --divider-strong: rgba(…, 0.2);
-       --input-bg: rgba(…, 0.6);
-       --input-border: rgba(…, 0.16);
-       --highlight: rgba(…, 0.06);
-       --highlight-strong: rgba(…, 0.14);
-       --accent: #…;
-       --accent-hover: #…;
-       --accent-active: #…;
-       --accent-glow: rgba(…, 0.4);
-       --accent-glow-strong: rgba(…, 0.6);
-       --accent-soft: rgba(…, 0.14);
-       --mesh-1: rgba(…, 0.35);
-       --mesh-2: rgba(…, 0.22);
-       --mesh-3: rgba(…, 0.16);
-       --mesh-4: rgba(…, 0.12);
-   }
-   ```
-2. **Add the light-mode override** in the same file:
-   ```css
-   [data-theme="light"][data-scheme="myscheme"] {
-       --bg-page: #…;
-       --bg-elevated: #…;
-       --mesh-1: rgba(…, 0.12);
-       --mesh-2: rgba(…, 0.08);
-       --mesh-3: rgba(…, 0.05);
-       --mesh-4: rgba(…, 0.04);
-       --accent: #…;
-       --accent-hover: #…;
-       --accent-glow: rgba(…, 0.2);
-       --accent-glow-strong: rgba(…, 0.32);
-       --accent-soft: rgba(…, 0.08);
-   }
-   ```
+1. **Add the dark full-palette block** in `assets/css/critical.css` (see existing schemes for the ~35-token template).
+2. **Add the light-mode override** in the same file.
 3. **Add a per-scheme mesh gradient** in `theme.json` under `settings.color.gradients`.
 4. **Add to `inc/customizer.php`** in the `dxadult_default_scheme` choices array.
-5. **Test contrast** for both dark and light modes against `--bg-page`. Aim for WCAG AA (4.5:1 for body text, 3:1 for large text).
+5. **Test contrast** for both dark and light modes against `--bg-page`. Aim for WCAG AA.
 
 ### Adding a New Meta Field
 
-1. Register in `inc/template-functions.php` (`dxadult_register_listing_meta()`):
-   ```php
-   register_post_meta( 'listing', 'my_field', array(
-       'type'              => 'string',
-       'single'            => true,
-       'sanitize_callback' => 'sanitize_text_field',
-       'auth_callback'     => function () { return current_user_can( 'edit_posts' ); },
-       'show_in_rest'      => true,
-   ) );
-   ```
-2. Add UI in `dxadult_listing_meta_box_callback()` and save in `dxadult_save_listing_meta()`.
-3. Optionally add an admin column in `dxadult_listing_columns()` and `dxadult_listing_custom_column()`.
-4. Display in `template-parts/content-listing-card.php` or a new template tag in `inc/template-tags.php`.
+1. Register in `inc/template-functions.php` (`dxadult_register_listing_meta()`)
+2. Add UI in `dxadult_listing_meta_box_callback()` and save in `dxadult_save_listing_meta()`
+3. Optionally add an admin column
+4. Display in `template-parts/content-listing-card.php` or `template-parts/content-listing-row.php`
 
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
+### 1.3.0 — Default Categories + List/Grid View
+
+- **100 default adult site categories** auto-imported on theme activation with SEO descriptions. Includes Amateur, Anal, Asian, BBW, BDSM, MILF, Teen, Hentai, VR, Shemale, and 80+ more. Idempotent import; admin notice shows the count. Re-importable via `dxadult_import_default_categories()`.
+- **List/Grid view toggle** in archive toolbar. **List is the default** — true link-list feel with thumbnail | title + categories + status | rating | Visit button per row. Grid view is the original card layout. View persists in `localStorage` and via `?view=` URL param.
+- **New template part** `template-parts/content-listing-row.php` for the row layout.
+- **Listing Details meta box** — URL field relabeled "External link / URL:" with a clear description of where the link appears on the frontend.
+- **`$_GET['view']`** sanitized via `sanitize_key()` + whitelist to `list`/`grid` in `archive.php`.
+
 ### 1.2.0 — Design System Overhaul
 
 - **Per-scheme full-palette** — Each of the 8 schemes now rewires the entire theme (bg, surfaces, glass, text, mesh), not just the accent.
 - **Animated mesh background** — Subtle 24s drift across 4 radial gradient stops; reduced-motion aware.
-- **3-stop gradient text** on h1, `.site-title`, `.page-title`, `.entry-title` (`text-primary` → `accent` → `accent-hover`).
+- **3-stop gradient text** on h1, `.site-title`, `.page-title`, `.entry-title`.
 - **Glowing scrollbar** (Webkit) that picks up the active scheme on hover.
-- **Bolder focus rings** (2px + 3px accent glow) and **bolder card hovers** (lift + accent border + 40px glow).
+- **Bolder focus rings** and **bolder card hovers**.
 - **Light-mode tinted pastels** for all 7 non-default schemes.
 - **`theme.json`** updated with 8 per-scheme mesh gradients.
 - **4th mesh gradient stop** (`--mesh-4`) for richer per-scheme backgrounds.
@@ -362,7 +328,6 @@ See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 - Open Graph, Twitter Cards, canonical URLs, expanded JSON-LD
 - `theme.json` for Gutenberg block editor
 - Security hardening: hashed IPs, nonces everywhere, HttpOnly cookies
-- IntersectionObserver refactored to CSS class toggle
 
 ### 1.0.0 — Initial Release
 

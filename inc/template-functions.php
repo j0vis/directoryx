@@ -166,12 +166,137 @@ function dxadult_register_listing_meta() {
 		)
 	);
 }
-add_action( 'init', 'dxadult_register_listing_meta' );
+add_action( 'init', 'dxadult_register_listing_meta' );/**
+ * Shortcode: [dxadult_home] — renders the directory home layout
+ * (Popular Categories + Latest Listings) on any page.
+ *
+ * Optional attributes:
+ *  - categories="8"   number of category cards (default 8)
+ *  - listings="12"    number of listing cards (default 12)
+ *  - show_cats="1"    show categories section (default 1)
+ *  - show_listings="1" show listings section (default 1)
+ */
+function dxadult_home_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		array(
+			'categories'   => 8,
+			'listings'     => 12,
+			'show_cats'    => 1,
+			'show_listings' => 1,
+		),
+		$atts,
+		'dxadult_home'
+	);
+
+	ob_start();
+
+	if ( (int) $atts['show_cats'] ) :
+		$cats = get_terms(
+			array(
+				'taxonomy'   => 'listing_category',
+				'hide_empty' => false,
+				'number'     => max( 1, (int) $atts['categories'] ),
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+			)
+		);
+		if ( ! empty( $cats ) && ! is_wp_error( $cats ) ) :
+			?>
+		<section class="featured-categories section">
+			<h2 class="section-title"><?php esc_html_e( 'Popular Categories', 'directoryx-adult' ); ?></h2>
+			<div class="category-grid">
+				<?php
+				foreach ( $cats as $category ) :
+					get_template_part( 'template-parts/content', 'category-card', array( 'category' => $category ) );
+				endforeach;
+				?>
+			</div>
+		</section>
+			<?php
+		endif;
+	endif;
+
+	if ( (int) $atts['show_listings'] ) :
+		$listings = new WP_Query(
+			array(
+				'post_type'      => 'listing',
+				'posts_per_page' => max( 1, (int) $atts['listings'] ),
+				'no_found_rows'  => true,
+			)
+		);
+		if ( $listings->have_posts() ) :
+			?>
+		<section class="latest-listings section">
+			<h2 class="section-title"><?php esc_html_e( 'Latest Listings', 'directoryx-adult' ); ?></h2>
+			<div class="listing-grid" itemscope itemtype="https://schema.org/ItemList">
+				<?php
+				while ( $listings->have_posts() ) :
+					$listings->the_post();
+					get_template_part( 'template-parts/content', 'listing-card' );
+				endwhile;
+				wp_reset_postdata();
+				?>
+			</div>
+		</section>
+			<?php
+		endif;
+	endif;
+
+	return (string) ob_get_clean();
+}
+add_shortcode( 'dxadult_home', 'dxadult_home_shortcode' );
 
 /**
- * Add meta box for listing details.
+ * Enqueue admin-only assets for the listing edit screen.
+ */
+function dxadult_enqueue_admin( $hook ) {
+	$screen = get_current_screen();
+	if ( ! $screen || 'listing' !== $screen->post_type ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'dxadult-admin',
+		DXADULT_URI . '/assets/css/admin.css',
+		array(),
+		DXADULT_VERSION
+	);
+
+	wp_enqueue_script(
+		'dxadult-admin',
+		DXADULT_URI . '/assets/js/admin.js',
+		array(),
+		DXADULT_VERSION,
+		true
+	);
+
+	wp_localize_script(
+		'dxadult-admin',
+		'dxadultAdmin',
+		array(
+			'invalidUrl' => __( 'Please enter a valid http(s) URL (including https://).', 'directoryx-adult' ),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'dxadult_enqueue_admin' );
+
+/**
+ * Add meta boxes for listings.
+ *
+ * Two meta boxes are added so the URL is impossible to miss:
+ *  - "External Link" (side, high) — URL field with visual prominence + Test button.
+ *  - "Listing Details" (normal, high) — rating, status, featured.
  */
 function dxadult_add_listing_meta_boxes() {
+	add_meta_box(
+		'dxadult_listing_link',
+		__( 'External Link', 'directoryx-adult' ),
+		'dxadult_listing_link_meta_box_callback',
+		'listing',
+		'side', // right column — most visible
+		'high'  // above other side meta boxes (e.g. Publish)
+	);
+
 	add_meta_box(
 		'dxadult_listing_details',
 		__( 'Listing Details', 'directoryx-adult' ),
@@ -184,21 +309,63 @@ function dxadult_add_listing_meta_boxes() {
 add_action( 'add_meta_boxes', 'dxadult_add_listing_meta_boxes' );
 
 /**
- * Meta box callback.
+ * Sidebar meta box: External Link (URL field + test button).
+ */
+function dxadult_listing_link_meta_box_callback( $post ) {
+	wp_nonce_field( 'dxadult_listing_meta', 'dxadult_listing_meta_nonce' );
+
+	$url = get_post_meta( $post->ID, 'listing_url', true );
+	$has_url = ! empty( $url );
+	$host    = $has_url ? wp_parse_url( $url, PHP_URL_HOST ) : '';
+	?>
+	<div class="dxadult-link-box">
+		<label for="listing_url" class="dxadult-link-box__label">
+			<span class="dashicons dashicons-admin-links" aria-hidden="true"></span>
+			<?php esc_html_e( 'Listing URL', 'directoryx-adult' ); ?>
+			<span class="dxadult-link-box__required" aria-hidden="true">*</span>
+		</label>
+		<input
+			type="url"
+			id="listing_url"
+			name="listing_url"
+			value="<?php echo esc_attr( $url ); ?>"
+			class="widefat dxadult-link-box__input"
+			placeholder="https://example.com"
+			required
+			aria-describedby="listing_url_description"
+		>
+		<?php if ( $has_url ) : ?>
+			<p class="dxadult-link-box__host" id="listing_url_description">
+				<span class="dashicons dashicons-globe" aria-hidden="true"></span>
+				<code><?php echo esc_html( $host ); ?></code>
+			</p>
+			<button type="button" id="dxadult-test-link" class="button button-secondary dxadult-link-box__test" data-url="<?php echo esc_url( $url ); ?>">
+				<span class="dashicons dashicons-external" aria-hidden="true"></span>
+				<?php esc_html_e( 'Test link (open in new tab)', 'directoryx-adult' ); ?>
+			</button>
+		<?php else : ?>
+			<p class="dxadult-link-box__empty description" id="listing_url_description">
+				<span class="dashicons dashicons-warning" aria-hidden="true"></span>
+				<?php esc_html_e( 'No URL set — this listing will not have a Visit button.', 'directoryx-adult' ); ?>
+			</p>
+		<?php endif; ?>
+		<p class="description dxadult-link-box__help">
+			<?php esc_html_e( 'The full URL of the site you are listing. Shown as a "Visit" button on the listing card and as a "Visit Site" button on the single-listing page. Outbound clicks are tracked.', 'directoryx-adult' ); ?>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Main meta box: Listing Details (rating, status, featured).
  */
 function dxadult_listing_meta_box_callback( $post ) {
 	wp_nonce_field( 'dxadult_listing_meta', 'dxadult_listing_meta_nonce' );
 
-	$url      = get_post_meta( $post->ID, 'listing_url', true );
 	$rating   = get_post_meta( $post->ID, 'listing_rating', true );
 	$status   = get_post_meta( $post->ID, 'listing_status', true );
 	$featured = get_post_meta( $post->ID, 'listing_featured', true );
 	?>
-	<p>
-		<label for="listing_url"><?php esc_html_e( 'Listing URL:', 'directoryx-adult' ); ?></label><br>
-			<input type="url" id="listing_url" name="listing_url" value="<?php echo esc_attr( $url ); ?>" class="widefat" placeholder="https://example.com">
-		<br><span class="description"><?php esc_html_e( 'The full URL of the site you are listing. Shown as a "Visit" button on the listing card and as a "Visit Site" button on the single-listing page. Outbound clicks are tracked.', 'directoryx-adult' ); ?></span>
-	</p>
 	<p>
 		<label for="listing_rating"><?php esc_html_e( 'Rating (1.0 - 5.0):', 'directoryx-adult' ); ?></label><br>
 		<input type="number" id="listing_rating" name="listing_rating" value="<?php echo esc_attr( $rating ); ?>" min="1" max="5" step="0.1" class="widefat">
