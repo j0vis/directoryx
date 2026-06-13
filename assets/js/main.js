@@ -332,6 +332,34 @@ function dxadultLoadCSS(href, version) {
 
 	/* ── Load deferred CSS ── */
 	if (typeof dxadultData !== 'undefined') {
+		// Archive view toggle (list / grid) — persists preference in localStorage.
+		var viewBtns = $$('.archive-view-toggle__btn');
+		if (viewBtns.length) {
+			var savedView = localStorage.getItem('dxadult-archive-view');
+			if (savedView === 'list' || savedView === 'grid') {
+				viewBtns.forEach(function(b) {
+					var isActive = b.getAttribute('data-view') === savedView;
+					b.classList.toggle('is-active', isActive);
+					b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+				});
+			}
+			viewBtns.forEach(function(btn) {
+				btn.addEventListener('click', function() {
+					var view = btn.getAttribute('data-view');
+					localStorage.setItem('dxadult-archive-view', view);
+					viewBtns.forEach(function(b) {
+						var isActive = b === btn;
+						b.classList.toggle('is-active', isActive);
+						b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+					});
+					// Reload so the PHP template picks the right template part.
+					var url = new URL(window.location.href);
+					url.searchParams.set('view', view);
+					window.location.href = url.toString();
+				});
+			});
+		}
+
 		dxadultLoadCSS(dxadultData.cssUrl, dxadultData.cssVersion);
 	}
 })();

@@ -423,3 +423,4 @@ require_once DXADULT_DIR . '/inc/template-tags.php';
 require_once DXADULT_DIR . '/inc/template-functions.php';
 require_once DXADULT_DIR . '/inc/customizer.php';
 require_once DXADULT_DIR . '/inc/post-types.php';
+require_once DXADULT_DIR . '/inc/categories.php';

@@ -196,7 +196,8 @@ function dxadult_listing_meta_box_callback( $post ) {
 	?>
 	<p>
 		<label for="listing_url"><?php esc_html_e( 'Listing URL:', 'directoryx-adult' ); ?></label><br>
-		<input type="url" id="listing_url" name="listing_url" value="<?php echo esc_attr( $url ); ?>" class="widefat" placeholder="https://example.com">
+			<input type="url" id="listing_url" name="listing_url" value="<?php echo esc_attr( $url ); ?>" class="widefat" placeholder="https://example.com">
+		<br><span class="description"><?php esc_html_e( 'The full URL of the site you are listing. Shown as a "Visit" button on the listing card and as a "Visit Site" button on the single-listing page. Outbound clicks are tracked.', 'directoryx-adult' ); ?></span>
 	</p>
 	<p>
 		<label for="listing_rating"><?php esc_html_e( 'Rating (1.0 - 5.0):', 'directoryx-adult' ); ?></label><br>
