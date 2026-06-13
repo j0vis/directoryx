@@ -46,7 +46,7 @@ if ( is_singular() ) {
 $canonical = is_singular() ? get_permalink() : home_url( '/' );
 ?>
 <link rel="canonical" href="<?php echo esc_url( $canonical ); ?>">
-<script>(function(){var t=localStorage.getItem('dxadult-theme')||'dark';var s=localStorage.getItem('dxadult-scheme')||'midnight';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-scheme',s);var m=document.querySelector('#meta-theme-color');if(m)m.setAttribute('content',t==='light'?'#f6f8fa':'#0d1117');})();</script>
+<script>(function(){var t=localStorage.getItem('dxadult-theme')||'dark';document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('#meta-theme-color');if(m)m.setAttribute('content',t==='light'?'#f6f8fa':'#0d1117');})();</script>
 <?php wp_head(); ?>
 <style><?php require DXADULT_DIR . '/assets/css/critical.css'; ?></style>
 </head>
@@ -98,16 +98,11 @@ if ( function_exists( 'wp_body_open' ) ) {
 					?>
 				</nav>
 
-				<div class="scheme-picker" role="radiogroup" aria-label="<?php esc_attr_e( 'Color scheme', 'directoryx-adult' ); ?>">
-					<button class="scheme-dot" data-scheme="midnight" type="button" role="radio" aria-label="<?php esc_attr_e( 'Midnight blue', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="emerald" type="button" role="radio" aria-label="<?php esc_attr_e( 'Emerald green', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="ruby" type="button" role="radio" aria-label="<?php esc_attr_e( 'Ruby red', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="amethyst" type="button" role="radio" aria-label="<?php esc_attr_e( 'Amethyst purple', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="amber" type="button" role="radio" aria-label="<?php esc_attr_e( 'Amber gold', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="coral" type="button" role="radio" aria-label="<?php esc_attr_e( 'Coral orange', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="ocean" type="button" role="radio" aria-label="<?php esc_attr_e( 'Ocean teal', 'directoryx-adult' ); ?>"></button>
-					<button class="scheme-dot" data-scheme="slate" type="button" role="radio" aria-label="<?php esc_attr_e( 'Slate indigo', 'directoryx-adult' ); ?>"></button>
-				</div>
+				<?php
+				// The accent color scheme is configured by the webmaster in
+				// Appearance > Customize > Colors. Visitors only get the
+				// light/dark theme toggle below; they cannot change the accent.
+				?>
 
 				<button class="theme-toggle" id="theme-toggle" type="button" aria-label="<?php esc_attr_e( 'Toggle theme', 'directoryx-adult' ); ?>" aria-pressed="false">
 					<span class="theme-toggle-icon" aria-hidden="true">

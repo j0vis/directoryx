@@ -1,77 +1,88 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/theme.json",
-  "version": 2,
-  "settings": {
-    "appearanceTools": false,
-    "color": {
-      "custom": true,
-      "customDuotone": false,
-      "customGradient": false,
-      "defaultDuotone": false,
-      "defaultGradients": false,
-      "defaultPalette": false,
-      "link": true,
-      "background": true,
-      "text": true,
-      "palette": [
-        { "slug": "midnight", "color": "#58a6ff", "name": "Midnight Blue" },
-        { "slug": "emerald",  "color": "#3fb950", "name": "Emerald Green" },
-        { "slug": "ruby",     "color": "#f85149", "name": "Ruby Red" },
-        { "slug": "amethyst", "color": "#bc8cff", "name": "Amethyst Purple" },
-        { "slug": "amber",    "color": "#e3b341", "name": "Amber Gold" },
-        { "slug": "coral",    "color": "#ff7b72", "name": "Coral Orange" },
-        { "slug": "ocean",    "color": "#39d0d8", "name": "Ocean Teal" },
-        { "slug": "slate",    "color": "#a5b4fc", "name": "Slate Indigo" },
-        { "slug": "dark-bg",  "color": "#0d1117", "name": "Dark Background" },
-        { "slug": "light-bg", "color": "#f6f8fa", "name": "Light Background" },
-        { "slug": "success",  "color": "#3fb950", "name": "Success" },
-        { "slug": "warning",  "color": "#d29922", "name": "Warning" }
-      ],
-      "gradients": []
-    },
-    "typography": {
-      "customFontSize": true,
-      "fontStyle": true,
-      "fontWeight": true,
-      "letterSpacing": true,
-      "lineHeight": true,
-      "textDecoration": true,
-      "textTransform": true,
-      "dropCap": false,
-      "fontFamilies": [
-        {
-          "slug": "system",
-          "name": "System",
-          "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif"
-        }
-      ],
-      "fontSizes": [
-        { "slug": "small",  "size": "0.875rem", "name": "Small" },
-        { "slug": "medium", "size": "1rem",     "name": "Medium" },
-        { "slug": "large",  "size": "1.25rem",  "name": "Large" },
-        { "slug": "xl",     "size": "1.75rem",  "name": "Extra Large" }
-      ]
-    },
-    "spacing": {
-      "padding": true,
-      "margin": true,
-      "blockGap": true,
-      "units": [ "px", "em", "rem", "%", "vh", "vw" ]
-    },
-    "layout": {
-      "contentSize": "800px",
-      "wideSize": "1200px"
-    }
-  },
-  "styles": {
-    "color": {
-      "background": "var(--bg-page)",
-      "text": "var(--text-secondary)"
-    },
-    "typography": {
-      "fontFamily": "var(--font)",
-      "fontSize": "16px",
-      "lineHeight": "1.6"
-    }
-  }
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"custom": true,
+			"customDuotone": false,
+			"customGradient": true,
+			"defaultDuotone": false,
+			"defaultGradients": false,
+			"defaultPalette": false,
+			"link": true,
+			"background": true,
+			"text": true,
+			"palette": [
+				{ "slug": "midnight", "color": "#58a6ff", "name": "Midnight Blue" },
+				{ "slug": "emerald",  "color": "#3fb950", "name": "Emerald Green" },
+				{ "slug": "ruby",     "color": "#f85149", "name": "Ruby Red" },
+				{ "slug": "amethyst", "color": "#bc8cff", "name": "Amethyst Purple" },
+				{ "slug": "amber",    "color": "#e3b341", "name": "Amber Gold" },
+				{ "slug": "coral",    "color": "#ff7b72", "name": "Coral Orange" },
+				{ "slug": "ocean",    "color": "#39d0d8", "name": "Ocean Teal" },
+				{ "slug": "slate",    "color": "#a5b4fc", "name": "Slate Indigo" },
+				{ "slug": "dark-bg",  "color": "#08090c", "name": "Dark Background" },
+				{ "slug": "light-bg", "color": "#f6f8fa", "name": "Light Background" },
+				{ "slug": "success",  "color": "#3fb950", "name": "Success" },
+				{ "slug": "warning",  "color": "#e3b341", "name": "Warning" },
+				{ "slug": "error",    "color": "#f85149", "name": "Error" }
+			],
+			"gradients": [
+				{ "slug": "midnight-mesh", "gradient": "radial-gradient(ellipse at top left, rgba(88,166,255,0.14), transparent 60%), radial-gradient(ellipse at bottom right, rgba(188,140,255,0.08), transparent 60%)", "name": "Midnight Mesh" },
+				{ "slug": "accent-soft", "gradient": "linear-gradient(135deg, var(--accent-soft), transparent)", "name": "Accent Soft" }
+			]
+		},
+		"typography": {
+			"customFontSize": true,
+			"fontStyle": true,
+			"fontWeight": true,
+			"letterSpacing": true,
+			"lineHeight": true,
+			"textDecoration": true,
+			"textTransform": true,
+			"dropCap": false,
+			"fontFamilies": [
+				{
+					"slug": "system",
+					"name": "System",
+					"fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI Variable Display', 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif"
+				},
+				{
+					"slug": "mono",
+					"name": "Mono",
+					"fontFamily": "ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small",  "size": "0.875rem", "name": "Small" },
+				{ "slug": "medium", "size": "1rem",     "name": "Medium" },
+				{ "slug": "large",  "size": "1.375rem", "name": "Large" },
+				{ "slug": "xl",     "size": "1.75rem",  "name": "Extra Large" },
+				{ "slug": "xxl",    "size": "2.25rem",  "name": "2XL" },
+				{ "slug": "xxxl",   "size": "3rem",     "name": "3XL" }
+			]
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true,
+			"blockGap": true,
+			"units": [ "px", "em", "rem", "%", "vh", "vw" ]
+		},
+		"layout": {
+			"contentSize": "800px",
+			"wideSize": "1280px"
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--bg-page)",
+			"text": "var(--text-secondary)"
+		},
+		"typography": {
+			"fontFamily": "var(--font-sans)",
+			"fontSize": "1rem",
+			"lineHeight": "1.6"
+		}
+	}
 }

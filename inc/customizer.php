@@ -20,7 +20,7 @@ function dxadult_customize_register( $wp_customize ) {
 		'dxadult_default_theme',
 		array(
 			'label'       => __( 'Default Theme Mode', 'directoryx-adult' ),
-			'description' => __( 'Users can toggle between light and dark mode via the theme toggle button.', 'directoryx-adult' ),
+			'description' => __( 'Initial mode for new visitors. Visitors can toggle between light and dark mode via the theme toggle button in the header.', 'directoryx-adult' ),
 			'section'     => 'colors',
 			'type'        => 'select',
 			'choices'     => array(
@@ -42,8 +42,8 @@ function dxadult_customize_register( $wp_customize ) {
 	$wp_customize->add_control(
 		'dxadult_default_scheme',
 		array(
-			'label'       => __( 'Default Accent Scheme', 'directoryx-adult' ),
-			'description' => __( 'Accent color used across the theme.', 'directoryx-adult' ),
+			'label'       => __( 'Accent Color Scheme (site-wide)', 'directoryx-adult' ),
+			'description' => __( 'Site-wide accent color. This is a webmaster setting — visitors can only toggle between light and dark mode via the theme toggle in the header.', 'directoryx-adult' ),
 			'section'     => 'colors',
 			'type'        => 'select',
 			'choices'     => array(

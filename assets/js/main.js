@@ -59,58 +59,26 @@ function dxadultLoadCSS(href, version) {
 		}
 	});
 
-	/* ── Color scheme switcher ── */
-	var dots = $$('.scheme-dot');
-	var currentScheme = localStorage.getItem('dxadult-scheme') || 'midnight';
-	var schemeColors = {
-		midnight: { dark: '#0d1117', light: '#f6f8fa' },
-		emerald:  { dark: '#3fb950', light: '#1a7f37' },
-		ruby:     { dark: '#f85149', light: '#cf222e' },
-		amethyst: { dark: '#bc8cff', light: '#8250df' },
-		amber:    { dark: '#e3b341', light: '#9a6700' },
-		coral:    { dark: '#ff7b72', light: '#cf4a3a' },
-		ocean:    { dark: '#39d0d8', light: '#0d7d7d' },
-		slate:    { dark: '#a5b4fc', light: '#6366f1' }
-	};
+	/*
+	 * Accent color scheme is a webmaster-only setting (configured in
+	 * Appearance > Customize > Colors). Visitors cannot change it. The
+	 * scheme value is set server-side on the <html data-scheme="...">
+	 * attribute and is never read from or written to localStorage.
+	 *
+	 * Visitors can only toggle between light and dark mode below.
+	 */
 	var metaThemeColor = $('#meta-theme-color');
-
-	function updateMetaThemeColor(theme, scheme) {
-		if (metaThemeColor) {
-			var colors = schemeColors[scheme] || schemeColors['midnight'];
-			metaThemeColor.setAttribute('content', colors[theme]);
-		}
-	}
-
-	function applyScheme(scheme) {
-		document.documentElement.setAttribute('data-scheme', scheme);
-		localStorage.setItem('dxadult-scheme', scheme);
-		dots.forEach(function(d) {
-			d.classList.toggle('active', d.getAttribute('data-scheme') === scheme);
-		});
-		var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-		updateMetaThemeColor(currentTheme, scheme);
-	}
-
-	if (dots.length) {
-		applyScheme(currentScheme);
-		dots.forEach(function(dot) {
-			dot.addEventListener('click', function() {
-				applyScheme(this.getAttribute('data-scheme'));
-			});
-		});
-	}
-
-	/* ── Light/dark theme toggle ── */
-	var themeToggle = $('#theme-toggle');
+	var themeBg = { dark: '#0d1117', light: '#f6f8fa' };
 
 	function applyTheme(theme) {
 		document.documentElement.setAttribute('data-theme', theme);
 		localStorage.setItem('dxadult-theme', theme);
 		if (themeToggle) themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
-		var activeScheme = document.documentElement.getAttribute('data-scheme') || currentScheme;
-		updateMetaThemeColor(theme, activeScheme);
+		if (metaThemeColor) metaThemeColor.setAttribute('content', themeBg[theme] || themeBg.dark);
 	}
 
+	/* ── Light/dark theme toggle (only user-facing UI) ── */
+	var themeToggle = $('#theme-toggle');
 	applyTheme(localStorage.getItem('dxadult-theme') || 'dark');
 	if (themeToggle) {
 		themeToggle.addEventListener('click', function() {
