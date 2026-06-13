@@ -27,6 +27,7 @@
    - **URL:** The external site link
    - **Rating:** 1.0 to 5.0 stars
    - **Status:** Active, Reviewed, or New
+   - **Featured:** Tick to pin to the top of archives with a gold badge
 4. Assign to one or more categories
 5. Add a featured image (recommended: 800x600)
 6. Publish
@@ -44,6 +45,11 @@
 2. Set the template to **Directory Categories**
 3. This shows all categories in a grid
 
+**Top Rated & Most Popular:**
+1. Create two new pages
+2. Set one template to **Top Rated** and the other to **Most Popular**
+3. Each shows listings sorted by `listing_rating` or `listing_view_count` respectively
+
 **Full Width Page:**
 1. Create any page
 2. Set the template to **Full Width** for content without sidebar
@@ -52,26 +58,30 @@
 
 Go to **Appearance > Customize** to configure:
 
-- **Default Theme Mode:** Dark or Light (users can override with the toggle)
-- **Default Accent Scheme:** Choose from 8 color schemes
-- **Site Identity:** Logo, title, tagline
-- **Menus:** Primary and footer navigation
-- **Widgets:** Sidebar content
+- **Default Theme Mode** — Dark or Light. Visitors can override with the toggle in the header.
+- **Accent Color Scheme (site-wide)** — Choose from 8 schemes. This is a **webmaster-only** setting; visitors can only toggle light/dark via the header button.
+- **Site Identity** — Logo, title, tagline
+- **Menus** — Primary and footer navigation
+- **Widgets** — Sidebar content
 
-### 5. Color Scheme Picker
+> **Important:** Each color scheme rewires the **entire theme** — page background, surface elevations, glass tints, text tints, and the mesh gradient all change. The same component looks completely different in Midnight (deep navy with blue mesh) vs Ruby (deep wine with red mesh) vs Amber (warm brown with gold mesh). The selected scheme is applied via the `data-scheme` attribute on `<html>` server-side.
 
-The header includes a color scheme picker (dots) that lets users choose their accent color:
+### 5. Color Schemes (Webmaster Only)
 
-- **Midnight Blue** — Classic blue (#58a6ff)
-- **Emerald Green** — Fresh green (#3fb950)
-- **Ruby Red** — Bold red (#f85149)
-- **Amethyst Purple** — Elegant purple (#bc8cff)
-- **Amber Gold** — Warm gold (#e3b341)
-- **Coral Orange** — Energetic orange (#ff7b72)
-- **Ocean Teal** — Cool teal (#39d0d8)
-- **Slate Indigo** — Professional indigo (#a5b4fc)
+The 8 color schemes are configurable in **Appearance > Customize > Colors > Accent Color Scheme (site-wide)**:
 
-All colors are WCAG AA accessible and persist in the user's browser via localStorage.
+| Scheme | Mood | Accent (Dark) | Accent (Light) |
+|--------|------|:-------------:|:--------------:|
+| **Midnight Blue** | Cool, professional | `#58a6ff` | `#0969da` |
+| **Emerald Green** | Natural, fresh | `#3fb950` | `#1a7f37` |
+| **Ruby Red** | Sensual, deep wine | `#f85149` | `#cf222e` |
+| **Amethyst Purple** | Mystical, cosmic | `#bc8cff` | `#8250df` |
+| **Amber Gold** | Luxurious, warm | `#e3b341` | `#9a6700` |
+| **Coral Orange** | Vibrant, terracotta | `#ff7b72` | `#cf4a3a` |
+| **Ocean Teal** | Refreshing, deep sea | `#39d0d8` | `#0d7d7d` |
+| **Slate Indigo** | Refined, sophisticated | `#a5b4fc` | `#6366f1` |
+
+All accents are WCAG AA compliant against their respective dark/light backgrounds. The theme remembers the light/dark mode preference in `localStorage`; the color scheme is server-rendered from the Customizer default.
 
 ### 6. Mobile Navigation
 
@@ -95,27 +105,48 @@ The theme is optimized for 100/100/100 PageSpeed scores:
 ## SEO
 
 The theme includes Schema.org structured data:
-- **ItemList** on listing grids
-- **ListItem** on individual cards
-- **SiteNavigationElement** on menus
-- **BreadcrumbList** when Yoast SEO is active
+- **Thing + AggregateRating** on single listings
+- **BreadcrumbList** for navigation
+- **ItemList** on listing grids (auto-generated)
 
 Install **Yoast SEO** or **Rank Math** for enhanced SEO features.
 
 ## Troubleshooting
 
-**Color scheme not saving:**
-- The theme uses `localStorage` for user preferences
-- Clear browser cache and localStorage if needed
-- The Customizer default is the fallback
+**Color scheme not changing the look as expected:**
+- The scheme is set server-side in the Customizer; visitors cannot override it
+- Clear server-side caching (WP Rocket, W3 Total Cache, Cloudflare) after changing the scheme
+- The `data-scheme` attribute is rendered on `<html>` — inspect the page source to confirm
+
+**Light/dark mode not persisting:**
+- The toggle uses `localStorage`; ensure cookies/localStorage are enabled
+- Browser private/incognito mode resets the preference on session close
 
 **Missing thumbnails:**
 - Ensure featured images are set on listings
-- Check that `dxadult-grid` image size is available
+- Check that `dxadult-grid` image size is available (regenerate thumbnails after theme activation)
 
 **Search not working:**
 - The AJAX search requires the theme JS to be loaded
 - Check that `dxadultData` is present in the page source
+- Verify the nonce is being sent (check Network tab in dev tools)
+
+## Design System
+
+The theme uses a **per-scheme full-palette design system** (v1.2.0+). Each of the 8 schemes defines ~35 design tokens that rewire the entire theme:
+
+- **Backgrounds** (`--bg-page`, `--bg-elevated`, `--bg-overlay`)
+- **Glass** (`--glass-bg`, `--glass-bg-strong`, `--glass-bg-subtle`, `--glass-border`, `--glass-border-strong`)
+- **Text** (`--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`)
+- **Surfaces** (`--card-bg`, `--card-bg-strong`, `--card-border`, `--card-border-hover`)
+- **Dividers** (`--divider`, `--divider-strong`)
+- **Inputs** (`--input-bg`, `--input-border`)
+- **Accent** (`--accent`, `--accent-hover`, `--accent-active`, `--accent-glow`, `--accent-glow-strong`, `--accent-soft`)
+- **Mesh** (`--mesh-1`, `--mesh-2`, `--mesh-3`, `--mesh-4` — 4 radial gradient stops for the page background)
+
+Visual treatments include an **animated mesh background** (24s drift, reduced-motion aware), **3-stop gradient text** on titles (`text-primary` → `accent` → `accent-hover`), a **glowing scrollbar**, and **bolder hovers** (cards lift, emit a 40px accent glow, and get a 1px accent border).
+
+For the full token reference, see `CHANGELOG.md` (v1.2.0 entry) and the comments at the top of `assets/css/critical.css`.
 
 ## Support
 

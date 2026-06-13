@@ -1,21 +1,25 @@
 # DirectoryX Adult
 
-A high-performance adult site directory WordPress theme built on DirectoryX. Glassmorphic design with light/dark mode toggle and 8 accessible accent schemes. Optimized for 100/100/100 PageSpeed.
+A high-performance adult site directory WordPress theme built on DirectoryX. **Per-scheme full-palette design system** — each of the 8 accent schemes rewires the entire theme (background, surfaces, glass tints, text tints, mesh gradient), not just the accent color. Optimized for 100/100/100 PageSpeed.
 
 ![WordPress Version](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)
 ![PHP Version](https://img.shields.io/badge/PHP-8.0%2B-purple.svg)
 ![License](https://img.shields.io/badge/License-GPL%20v2-green.svg)
-![Version](https://img.shields.io/badge/Version-1.1.0-orange.svg)
+![Version](https://img.shields.io/badge/Version-1.2.0-orange.svg)
 
 ## Features
 
 ### Design & Theming
-- **Glassmorphic Design** — Frosted glass cards with backdrop-filter blur, subtle glow effects, and smooth hover animations
-- **8 Accessible Color Schemes** — Midnight Blue, Emerald Green, Ruby Red, Amethyst Purple, Amber Gold, Coral Orange, Ocean Teal, Slate Indigo. All WCAG AA compliant
-- **Dark/Light Mode Toggle** — Persisted in localStorage with smooth transitions
-- **100/100/100 PageSpeed** — Critical CSS inlined, deferred assets, lazy loading, zero bloat
-- **SVG Icon System** — 30+ inline SVG icons, themeable via CSS `currentColor`
-- **Scroll Progress Bar & Back-to-Top** — Floating UI helpers with reduced-motion support
+- **Per-Scheme Full-Palette Design System** — Each of the 8 accent schemes rewires the **entire theme**: page background, surface elevations, glass tints, text tints, and the 4-stop mesh gradient. Switching from Midnight to Ruby changes the whole page to a deep wine background with red-tinted glass, red-tinted text, and a vibrant red mesh.
+- **8 Accessible Color Schemes** — Midnight Blue, Emerald Green, Ruby Red, Amethyst Purple, Amber Gold, Coral Orange, Ocean Teal, Slate Indigo. All WCAG AA compliant.
+- **Glassmorphic Design** — Frosted glass cards with `backdrop-filter: blur(24px) saturate(180%)`, layered shadows with inner top-edge highlight (the "glass" tell), and smooth hover animations.
+- **Animated Mesh Background** — Subtle 24s drift across 4 radial gradient stops. Paused for `prefers-reduced-motion`. Zero new HTTP requests.
+- **3-Stop Gradient Text** — Logo, page titles, and entry titles use a `text → accent → accent-hover` gradient via `background-clip: text`. Each scheme colors them differently.
+- **Glowing Scrollbar** — Scrollbar thumb lights up to the active scheme's accent on hover (Webkit).
+- **Dark/Light Mode Toggle** — Persisted in localStorage with smooth transitions. Theme toggle is the only user-facing color control.
+- **100/100/100 PageSpeed** — Critical CSS inlined, deferred assets, lazy loading, zero bloat.
+- **SVG Icon System** — 30+ inline SVG icons, themeable via CSS `currentColor`.
+- **Scroll Progress Bar & Back-to-Top** — Floating UI helpers with reduced-motion support.
 
 ### Content & Listings
 - **Custom Listing Post Type** — With URL, rating, status, **featured flag**, **view counter**, and **click counter** meta fields
@@ -51,10 +55,10 @@ A high-performance adult site directory WordPress theme built on DirectoryX. Gla
 - **Pagination rel=prev/next** — On paginated archives
 
 ### Block Editor
-- **theme.json** — Gutenberg color palette, typography scale, and spacing matching the theme
+- **theme.json** — Gutenberg color palette (8 schemes + bg/text swatches), 8 per-scheme mesh gradients, typography scale, spacing, `appearanceTools`, `customGradient`
 
 ### Accessibility
-- Skip links, ARIA labels, semantic HTML5, keyboard navigation, reduced motion support, `aria-live` search results
+- Skip links, ARIA labels, semantic HTML5, keyboard navigation, reduced motion support, `aria-live` search results, gradient text retains readable contrast in both light and dark mode
 
 ### Internationalization
 - Full i18n support with POT file (`directoryx-adult` text domain)
@@ -76,7 +80,7 @@ The screenshot shows the DirectoryX Adult theme's glassmorphic design with the d
 
 1. Upload the theme folder to `/wp-content/themes/`
 2. Activate the theme through **Appearance > Themes** in WordPress
-3. Go to **Appearance > Customize** to set the default color scheme
+3. Go to **Appearance > Customize** to set the default color scheme (the **only** place visitors can't override; they can only toggle light/dark via the theme toggle in the header)
 4. Create "listing" posts and assign them to "listing_category" terms
 5. (Optional) Create pages using the **Top Rated** or **Most Popular** templates for curated discovery
 
@@ -90,7 +94,8 @@ This theme achieves 100/100/100 out of the box by:
 4. **Removed bloat** — Emoji scripts, block library CSS, global styles, REST API links, oEmbed, shortlink, RSD, WLW manifest, generator tag
 5. **Lazy loading** — All images use `loading="lazy"`
 6. **System font stack** — Zero external font requests
-7. **`will-change` on entrance animations** — GPU-accelerated transitions, no layout thrash
+7. **Pure-CSS animated mesh** — `background-position` animation, no JS or image requests
+8. **`will-change` on entrance animations** — GPU-accelerated transitions, no layout thrash
 
 ## Custom Post Types & Taxonomies
 
@@ -148,18 +153,48 @@ GET /wp-json/directoryx/v1/listings?category=12&sort=rating&min_rating=4&per_pag
 
 **Available params:** `category` (term_id), `status` (active/reviewed/new), `min_rating` (float), `sort` (rating/popular/alpha), `per_page` (1–50, default 12).
 
-## Color Schemes
+## Design System
 
-| Scheme | Dark Accent | Light Accent |
-|--------|-------------|--------------|
-| Midnight Blue | `#58a6ff` | `#0969da` |
-| Emerald Green | `#3fb950` | `#1a7f37` |
-| Ruby Red | `#f85149` | `#cf222e` |
-| Amethyst Purple | `#bc8cff` | `#8250df` |
-| Amber Gold | `#e3b341` | `#9a6700` |
-| Coral Orange | `#ff7b72` | `#cf4a3a` |
-| Ocean Teal | `#39d0d8` | `#0d7d7d` |
-| Slate Indigo | `#a5b4fc` | `#6366f1` |
+### Per-Scheme Full-Palette Architecture
+
+The 8 color schemes are **not** accent-color overrides — each one is a **complete theme** that rewires the entire visual identity of the site. The same `h1` selector, the same `.listing-card`, the same `.site-title` will look completely different depending on which scheme the webmaster has selected in **Appearance → Customize → Colors**.
+
+**Each scheme block defines ~35 design tokens**, including:
+
+| Category | Tokens |
+|----------|--------|
+| **Background** | `--bg-page`, `--bg-elevated`, `--bg-overlay` |
+| **Glass** | `--glass-bg`, `--glass-bg-strong`, `--glass-bg-subtle`, `--glass-border`, `--glass-border-strong` |
+| **Text** | `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle` |
+| **Surfaces** | `--card-bg`, `--card-bg-strong`, `--card-border`, `--card-border-hover` |
+| **Dividers** | `--divider`, `--divider-strong` |
+| **Inputs** | `--input-bg`, `--input-border` |
+| **Highlights** | `--highlight`, `--highlight-strong` |
+| **Accent** | `--accent`, `--accent-hover`, `--accent-active`, `--accent-glow`, `--accent-glow-strong`, `--accent-soft` |
+| **Mesh** | `--mesh-1`, `--mesh-2`, `--mesh-3`, `--mesh-4` |
+
+### Color Schemes
+
+| Scheme | Accent (Dark) | Dark BG | Accent (Light) | Light BG | Mood |
+|--------|:-------------:|:-------:|:--------------:|:--------:|------|
+| Midnight Blue | `#58a6ff` | `#050a1a` | `#0969da` | `#f0f4fa` | Cool, professional, deep space |
+| Emerald Green | `#3fb950` | `#03140c` | `#1a7f37` | `#eaf6ee` | Natural, fresh, forest |
+| Ruby Red | `#f85149` | `#1a0710` | `#cf222e` | `#faeef0` | Sensual, deep wine |
+| Amethyst Purple | `#bc8cff` | `#120822` | `#8250df` | `#f4eefb` | Mystical, cosmic |
+| Amber Gold | `#e3b341` | `#1a1104` | `#9a6700` | `#fbf4e0` | Luxurious, warm sunset |
+| Coral Orange | `#ff7b72` | `#1d0908` | `#cf4a3a` | `#fdeee9` | Vibrant, terracotta |
+| Ocean Teal | `#39d0d8` | `#021418` | `#0d7d7d` | `#e5f6f8` | Refreshing, deep sea |
+| Slate Indigo | `#a5b4fc` | `#08081e` | `#6366f1` | `#eef0fb` | Refined, sophisticated |
+
+All accent colors are WCAG AA compliant against their respective dark/light background.
+
+### Visual Treatment
+
+- **Animated mesh** — 4 radial gradient stops drift via `background-position` over 24s. Each scheme tints the mesh with its own color at 0.32+ opacity (visible, not subtle).
+- **Gradient text** — `h1`, `.site-title`, `.page-title`, `.entry-title` use a 3-stop gradient (`text-primary` → `accent` → `accent-hover`) via `background-clip: text` + `-webkit-text-fill-color: transparent`.
+- **Glowing scrollbar** (Webkit) — Thumb picks up the active scheme's accent on hover.
+- **Bolder hovers** — `.listing-card:hover` lifts `-8px` and emits a 40px accent glow + 1px accent border via `mask-composite`.
+- **Bolder focus rings** — 2px outline + 3px accent glow.
 
 ## File Structure
 
@@ -168,7 +203,7 @@ directoryx-adult/
 ├── style.css              # Theme header + base styles
 ├── index.php              # Ultimate fallback template
 ├── functions.php          # Theme setup, hooks, custom functions
-├── theme.json             # Gutenberg block editor config
+├── theme.json             # Gutenberg block editor config (palette + 8 mesh gradients)
 ├── screenshot.png         # Theme screenshot
 ├── readme.txt             # WordPress.org readme
 ├── languages/             # .pot, .po, .mo files
@@ -194,7 +229,7 @@ directoryx-adult/
 │   └── template-full-width.php
 ├── assets/
 │   ├── css/
-│   │   ├── critical.css     # Inlined critical CSS (entrance animations, toasts, lightbox, filters…)
+│   │   ├── critical.css     # Inlined critical CSS (design system + all components)
 │   │   ├── main.css         # Deferred styles
 │   │   ├── editor-style.css
 │   │   └── print.css
@@ -224,23 +259,63 @@ All icons use `currentColor` for stroke/fill, so they inherit the theme's accent
 
 ### Adding a Color Scheme
 
-1. Add CSS variables in `assets/css/critical.css`:
+Each scheme is a full palette, so adding one is more involved than just defining an accent. Required steps:
+
+1. **Add the dark full-palette block** in `assets/css/critical.css`:
    ```css
    [data-scheme="myscheme"] {
-       --accent: #hexcode;
-       --accent-hover: #hexcode;
-       --accent-glow: rgba(...);
-       --card-hover-border: rgba(...);
+       --bg-page: #…;
+       --bg-elevated: #…;
+       --glass-bg: rgba(…, 0.5);
+       --glass-bg-strong: rgba(…, 0.74);
+       --glass-bg-subtle: rgba(…, 0.32);
+       --glass-border: rgba(…, 0.14);
+       --glass-border-strong: rgba(…, 0.22);
+       --text-primary: #…;
+       --text-secondary: #…;
+       --text-muted: #…;
+       --text-subtle: #…;
+       --card-bg: rgba(…, 0.5);
+       --card-bg-strong: rgba(…, 0.75);
+       --card-border: rgba(…, 0.12);
+       --card-border-hover: rgba(…, 0.24);
+       --divider: rgba(…, 0.12);
+       --divider-strong: rgba(…, 0.2);
+       --input-bg: rgba(…, 0.6);
+       --input-border: rgba(…, 0.16);
+       --highlight: rgba(…, 0.06);
+       --highlight-strong: rgba(…, 0.14);
+       --accent: #…;
+       --accent-hover: #…;
+       --accent-active: #…;
+       --accent-glow: rgba(…, 0.4);
+       --accent-glow-strong: rgba(…, 0.6);
+       --accent-soft: rgba(…, 0.14);
+       --mesh-1: rgba(…, 0.35);
+       --mesh-2: rgba(…, 0.22);
+       --mesh-3: rgba(…, 0.16);
+       --mesh-4: rgba(…, 0.12);
    }
-   [data-theme="light"][data-scheme="myscheme"] { ... }
    ```
-2. Add dot colors in `critical.css`:
+2. **Add the light-mode override** in the same file:
    ```css
-   .scheme-dot[data-scheme="myscheme"] { --dot-color: #hexcode; }
+   [data-theme="light"][data-scheme="myscheme"] {
+       --bg-page: #…;
+       --bg-elevated: #…;
+       --mesh-1: rgba(…, 0.12);
+       --mesh-2: rgba(…, 0.08);
+       --mesh-3: rgba(…, 0.05);
+       --mesh-4: rgba(…, 0.04);
+       --accent: #…;
+       --accent-hover: #…;
+       --accent-glow: rgba(…, 0.2);
+       --accent-glow-strong: rgba(…, 0.32);
+       --accent-soft: rgba(…, 0.08);
+   }
    ```
-3. Add to `assets/js/main.js` `schemeColors` object
-4. Add to `inc/customizer.php` choices array
-5. Add button to `header.php` scheme picker
+3. **Add a per-scheme mesh gradient** in `theme.json` under `settings.color.gradients`.
+4. **Add to `inc/customizer.php`** in the `dxadult_default_scheme` choices array.
+5. **Test contrast** for both dark and light modes against `--bg-page`. Aim for WCAG AA (4.5:1 for body text, 3:1 for large text).
 
 ### Adding a New Meta Field
 
@@ -261,6 +336,17 @@ All icons use `currentColor` for stroke/fill, so they inherit the theme's accent
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for the full release history.
+
+### 1.2.0 — Design System Overhaul
+
+- **Per-scheme full-palette** — Each of the 8 schemes now rewires the entire theme (bg, surfaces, glass, text, mesh), not just the accent.
+- **Animated mesh background** — Subtle 24s drift across 4 radial gradient stops; reduced-motion aware.
+- **3-stop gradient text** on h1, `.site-title`, `.page-title`, `.entry-title` (`text-primary` → `accent` → `accent-hover`).
+- **Glowing scrollbar** (Webkit) that picks up the active scheme on hover.
+- **Bolder focus rings** (2px + 3px accent glow) and **bolder card hovers** (lift + accent border + 40px glow).
+- **Light-mode tinted pastels** for all 7 non-default schemes.
+- **`theme.json`** updated with 8 per-scheme mesh gradients.
+- **4th mesh gradient stop** (`--mesh-4`) for richer per-scheme backgrounds.
 
 ### 1.1.0 — Feature Release
 

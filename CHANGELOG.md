@@ -13,6 +13,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated POT file generation via GitHub Actions
 - A/B testing framework for the 8 color schemes
 
+## [1.2.0] — 2026-06-13
+
+### Changed — Design System Overhaul
+
+The biggest change in this release is the **per-scheme full-palette design system**: each of the 8 accent schemes now rewires the **entire theme** (page background, surface elevations, glass tints, text tints, mesh gradient), not just the accent color. Switching from Midnight to Ruby no longer only changes link colors — it changes the whole page to a deep wine background with red-tinted glass, red-tinted text, and a vibrant red mesh gradient.
+
+### Added
+
+- **Animated mesh background** — Subtle 24s `background-position` drift across 4 radial gradient stops. Paused for `prefers-reduced-motion`. No new HTTP requests.
+- **3-stop gradient text** on `h1`, `.site-title`, `.page-title`, and `.entry-title` — flows from `var(--text-primary)` → `var(--accent)` → `var(--accent-hover)` via `background-clip: text`. Logo, page titles, and entry titles all glow with the active scheme.
+- **Glowing scrollbar** (Webkit) — Scrollbar thumb lights up to `--accent` with a glow on hover. Falls back to default in Firefox.
+- **Bolder focus rings** — 2px outline + `var(--glow-ring)` (3px accent glow) for keyboard nav.
+- **Bolder card hovers** — `.listing-card:hover` now lifts `-8px`, gets a 1px accent border, and emits a 40px accent glow. `.category-card:hover` gets a 1px accent border and a 32px glow.
+- **7 new light-mode scheme variants** — Each non-default light scheme now has a tinted pastel `--bg-page` and per-scheme mesh stops.
+- **4th mesh gradient stop** (`--mesh-4`) for richer backgrounds. Each scheme block overrides all 4 stops.
+- **8 per-scheme mesh gradients in `theme.json`** — One for each scheme so block-editor gradients match the frontend feel.
+- **Utility tokens** — `--glow-ring: 0 0 0 3px var(--accent-glow)` and `--glow-text: 0 0 24px var(--accent-glow)` for consistent glow treatments.
+
+### Changed
+
+- **Per-scheme full palette** — Every `[data-scheme="X"]` block now defines `--bg-page`, `--bg-elevated`, `--glass-bg`, `--glass-bg-strong`, `--glass-bg-subtle`, `--glass-border`, `--glass-border-strong`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`, `--card-bg`, `--card-border`, `--divider`, `--input-bg`, `--highlight`, and all 4 `--mesh-N` stops. Previously schemes only set `--accent` and `--mesh-N`.
+- **Mesh opacity bumped** from 0.14 to 0.32+ so the gradient is actually visible (and tinted) per scheme.
+- **Default `--bg-page`** darkened from `#08090c` to `#050a1a` for more scheme-tint headroom.
+- **Body `animation` consolidated** into a single `body { ... }` block (was two).
+- **`.entry-content a`** — Underline moved to hover/focus only (matches global `a` behaviour).
+- **`inc/customizer.php`** — Description for `dxadult_default_scheme` now explicitly states that each scheme changes the **entire theme** look, not just accent.
+
+### Design System Token Reference
+
+| Token | Purpose | Per-scheme? |
+|-------|---------|:-----------:|
+| `--bg-page` | Page background | ✅ |
+| `--bg-elevated` | Card / header / footer base | ✅ |
+| `--glass-bg` / `-strong` / `-subtle` | Glass card backgrounds | ✅ |
+| `--glass-border` / `-strong` | Glass card borders | ✅ |
+| `--text-primary` / `-secondary` / `-muted` / `-subtle` | Text colors | ✅ |
+| `--card-bg` / `-border` | Card surfaces | ✅ |
+| `--divider` / `-strong` | Divider lines | ✅ |
+| `--input-bg` / `-border` | Form inputs | ✅ |
+| `--highlight` / `-strong` | Top-edge "lit" gradient | ✅ |
+| `--accent` / `-hover` / `-active` | Accent palette | ✅ |
+| `--accent-glow` / `-glow-strong` / `-soft` | Accent glows | ✅ |
+| `--mesh-1` … `--mesh-4` | Page background gradient stops | ✅ |
+| `--success` / `--warning` / `--error` | Semantic | light-mode only |
+| `--font-sans` / `--font-display` / `--font-mono` | Typography | ❌ |
+| `--text-xs` … `--text-5xl` | Type scale | ❌ |
+| `--radius-sm` / `--radius` / `--radius-lg` / `--radius-xl` | Border radii | ❌ |
+| `--ease-smooth` / `--ease-spring` / `--ease-out` | Easing curves | ❌ |
+| `--duration-fast` / `--duration` / `--duration-slow` | Durations | ❌ |
+| `--glow-ring` / `--glow-text` | Utility shadows | derived |
+
+---
+
 ## [1.1.0] — 2026-06-13
 
 ### Added
@@ -156,6 +209,7 @@ When creating a new GitHub release, use this template:
 **Full Changelog**: https://github.com/j0vis/directoryx/compare/vPREVIOUS...vCURRENT
 ```
 
-[Unreleased]: https://github.com/j0vis/directoryx/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/j0vis/directoryx/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/j0vis/directoryx/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/j0vis/directoryx/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/j0vis/directoryx/releases/tag/v1.0.0
